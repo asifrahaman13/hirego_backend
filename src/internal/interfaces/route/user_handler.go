@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	"github.com/asifrahaman13/clean/src/internal/application"
+	"github.com/asifrahaman13/hirego/src/internal/application"
 )
 
 type UserHandler struct {

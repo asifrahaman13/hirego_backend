@@ -1,7 +1,7 @@
 // application/user_service.go
 package application
 
-import "github.com/asifrahaman13/clean/src/internal/domain"
+import "github.com/asifrahaman13/hirego/src/internal/domain"
 
 type UserService struct {
     UserRepository domain.UserRepository

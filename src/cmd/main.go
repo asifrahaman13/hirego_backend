@@ -4,9 +4,9 @@ package main
 import (
     "fmt"
     "net/http"
-    "github.com/asifrahaman13/clean/src/internal/application"
-    "github.com/asifrahaman13/clean/src/internal/infrastructure"
-    "github.com/asifrahaman13/clean/src/internal/interfaces/route"
+    "github.com/asifrahaman13/hirego/src/internal/application"
+    "github.com/asifrahaman13/hirego/src/internal/infrastructure"
+    "github.com/asifrahaman13/hirego/src/internal/interfaces/route"
 )
 
 func main() {

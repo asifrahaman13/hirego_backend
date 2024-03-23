@@ -2,8 +2,8 @@
 package route
 
 import (
-	"github.com/asifrahaman13/clean/src/internal/application"
-	"github.com/asifrahaman13/clean/src/internal/interfaces"
+	"github.com/asifrahaman13/hirego/src/internal/application"
+	"github.com/asifrahaman13/hirego/src/internal/interfaces"
 )
 
 func SetupRoutes(userService *application.UserService) *interfaces.Routes {

@@ -4,7 +4,7 @@ package infrastructure
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/asifrahaman13/clean/src/internal/domain"
+	"github.com/asifrahaman13/hirego/src/internal/domain"
 )
 
 type UserRepository struct {
