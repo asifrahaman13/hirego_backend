@@ -4,7 +4,6 @@ package infrastructure
 import (
 	"encoding/json"
 	"fmt"
-
 	"github.com/asifrahaman13/clean/src/internal/domain"
 )
 
@@ -53,7 +52,7 @@ func (r *UserRepository) FindByID(id int) (*domain.User, error) {
 		ID:   1,
 		Name: "John Doe",
 		Age:  30,
-	}
+	} 
 
 	fmt.Print(*user)
 
