@@ -3,6 +3,7 @@ package infrastructure
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/asifrahaman13/clean/src/internal/domain"
 )
@@ -10,6 +11,29 @@ import (
 type UserRepository struct {
 	// Any dependencies or configuration needed
 }
+
+// FindAll implements domain.UserRepository.
+// FindAll implements domain.UserRepository.
+func (r *UserRepository) FindAll() ([]*domain.User, error) {
+	user := &domain.User{
+		ID:   1,
+		Name: "John Doe sample data here.",
+		Age:  30,
+	}
+
+	// Marshal the user object to JSON
+	userJSON, err := json.Marshal(user)
+	if err != nil {
+		return nil, err
+	}
+
+	// Print the JSON string (optional)
+	fmt.Println(string(userJSON))
+
+	// Return a slice of pointers to user objects
+	return []*domain.User{user}, nil
+}
+
 
 // Save implements domain.UserRepository.
 func (r *UserRepository) Save(user *domain.User) error {
@@ -31,17 +55,9 @@ func (r *UserRepository) FindByID(id int) (*domain.User, error) {
 		Age:  30,
 	}
 
-	// Serialize user object to JSON
-	userJSON, err := json.Marshal(user)
-	if err != nil {
-		return nil, err
-	}
+	fmt.Print(*user)
 
-	// Deserialize JSON back to user object
-	var newUser domain.User
-	if err := json.Unmarshal(userJSON, &newUser); err != nil {
-		return nil, err
-	}
 
-	return &newUser, nil
+	return user, nil
 }
+

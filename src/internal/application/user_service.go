@@ -18,3 +18,7 @@ func (s *UserService) GetUserByID(id int) (*domain.User, error) {
 func (s *UserService) SaveUser(user *domain.User) error {
     return s.UserRepository.Save(user)
 }
+
+func (s *UserService) GetUsers() ([]*domain.User, error) {
+    return s.UserRepository.FindAll()
+}

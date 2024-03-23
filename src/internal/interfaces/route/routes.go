@@ -2,23 +2,21 @@
 package route
 
 import (
-    "github.com/asifrahaman13/clean/src/internal/application"
-    "github.com/asifrahaman13/clean/src/internal/interfaces"
+	"github.com/asifrahaman13/clean/src/internal/application"
+	"github.com/asifrahaman13/clean/src/internal/interfaces"
 )
 
 func SetupRoutes(userService *application.UserService) *interfaces.Routes {
-    userHandler := NewUserHandler(userService)
 
-    routes := &interfaces.Routes{
-        Routes: []*interfaces.Route{
-            {
-                Path:    "/user/",
-                Handler: userHandler.GetUserByID,
-                Method:  "GET",
-            },
-            // Add more routes here
-        },
-    }
+	// Define the user handler and the associated routes. In the next step combine them to the parent routes. 
+	userHandler := NewUserHandler(userService)
+	userRoutes := setupUserRoutes(userHandler)
 
-    return routes
+	allRoutes := userRoutes
+
+	routes := &interfaces.Routes{
+		Routes: allRoutes,
+	}
+
+	return routes
 }

@@ -10,4 +10,5 @@ type User struct {
 type UserRepository interface {
     FindByID(id int) (*User, error)
     Save(user *User) error
+    FindAll() ([]*User, error)
 }
