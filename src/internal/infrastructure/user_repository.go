@@ -2,9 +2,11 @@
 package infrastructure
 
 import (
-	"encoding/json"
+	"context"
 	"fmt"
 	"github.com/asifrahaman13/hirego/src/internal/domain"
+	"github.com/asifrahaman13/hirego/src/internal/services"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 type UserRepository struct {
@@ -14,25 +16,36 @@ type UserRepository struct {
 // FindAll implements domain.UserRepository.
 // FindAll implements domain.UserRepository.
 func (r *UserRepository) FindAll() ([]*domain.User, error) {
-	user := &domain.User{
-		ID:   1,
-		Name: "John Doe sample data here.",
-		Age:  30,
-	}
-
-	// Marshal the user object to JSON
-	userJSON, err := json.Marshal(user)
+	// Simulating a database query to find all users
+	mongodb_client, err := services.Services()
+   
 	if err != nil {
-		return nil, err
+		panic(err)
+	}
+	
+	coll := mongodb_client.Database("hirego").Collection("users")
+    
+	// Create the filters. 
+	fillter := bson.D{}
+    
+	// Find the users.
+	cursor, err := coll.Find(context.TODO(), fillter)
+
+	fmt.Printf("cursor: %v\n", cursor)
+
+	if err != nil {
+		panic(err)
 	}
 
-	// Print the JSON string (optional)
-	fmt.Println(string(userJSON))
+    // Define the cursor data type. 
+	var results []*domain.User
+	
+	if err = cursor.All(context.TODO(), &results); err != nil {
+		panic(err)	}
 
 	// Return a slice of pointers to user objects
-	return []*domain.User{user}, nil
+	return results, nil
 }
-
 
 // Save implements domain.UserRepository.
 func (r *UserRepository) Save(user *domain.User) error {
@@ -52,11 +65,9 @@ func (r *UserRepository) FindByID(id int) (*domain.User, error) {
 		ID:   1,
 		Name: "John Doe",
 		Age:  30,
-	} 
+	}
 
 	fmt.Print(*user)
 
-
 	return user, nil
 }
-
