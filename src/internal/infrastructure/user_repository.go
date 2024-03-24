@@ -1,4 +1,3 @@
-// infrastructure/user_repository.go
 package infrastructure
 
 import (
@@ -61,11 +60,13 @@ func (r *UserRepository) FindByID(id int) (*domain.User, error) {
 	// For demonstration purposes, we'll just return a hardcoded user
 
 	// Dummy user data
-	user := &domain.User{
-		ID:   1,
-		Name: "John Doe",
-		Age:  30,
-	}
+	 user := &domain.User{
+        FirstName: "John",
+        LastName:  "Doe",
+        Email:     "john.doe@example.com",
+        Password:  "password",
+    }
+
 
 	fmt.Print(*user)
 

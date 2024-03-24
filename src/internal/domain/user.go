@@ -1,11 +1,17 @@
 // domain/user.go
 package domain
 
+// import "go.mongodb.org/mongo-driver/bson/primitive"
+
 type User struct {
-    ID   int `json:"id"`
-    Name string `json:"name"`
-    Age  int `json:"age"`
+    // ID       *primitive.ObjectID `json:"_id,omitempty" bson:"_id,omitempty"`
+    FirstName string            `json:"firstname" bson:"firstname"`
+    LastName  string            `json:"lastname" bson:"lastname"`
+    Email     string            `json:"email" bson:"email"`
+    Password  string            `json:"password" bson:"password"`
 }
+
+
 
 type UserRepository interface {
     FindByID(id int) (*User, error)

@@ -1,12 +1,11 @@
-// internal/interfaces/http/user_handler.go
 package route
 
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/asifrahaman13/hirego/src/internal/application"
 	"net/http"
 	"strconv"
-	"github.com/asifrahaman13/hirego/src/internal/application"
 )
 
 type UserHandler struct {
@@ -43,18 +42,17 @@ func (h *UserHandler) GetUsers(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-
-    // The http response from mutex is not able to understand the golang struct object.
-    // As a result we need to convert it into the json data. 
+	// The http response from mutex is not able to understand the golang struct object.
+	// As a result we need to convert it into the json data.
 	userJSON, err := json.Marshal(user)
 	if err != nil {
 		http.Error(w, "Failed to encode user to JSON", http.StatusInternalServerError)
 		return
 	}
 
-    // Specify that you want the content to be JSON format. 
+	// Specify that you want the content to be JSON format.
 	w.Header().Set("Content-Type", "application/json")
 
-    // Return the json data. No need to have the return keyword.
+	// Return the json data. No need to have the return keyword.
 	w.Write(userJSON)
 }

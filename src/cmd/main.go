@@ -12,7 +12,10 @@ import (
 func main() {
     userRepository := infrastructure.NewUserRepository()
     userService := application.NewUserService(userRepository)
-    routes := route.SetupRoutes(userService)
+
+    authRepository:=infrastructure.NewAuthRepository()
+    authService:=application.NewAuthService(authRepository)
+    routes := route.SetupRoutes(userService, authService)
 
     // Create a new HTTP server mux
     mux := http.NewServeMux()
