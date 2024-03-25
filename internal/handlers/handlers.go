@@ -31,6 +31,8 @@ func (h *userHandler) GetUsers(c *gin.Context) {
 
 	fmt.Println("The result is", users)
 
-	helper.Response(c, 200, "hey there done", nil)
+	// helper.Response(c, 200, "hey there", nil)
+
+	helper.JSONResponse(c, 200, users, nil)
 
 }

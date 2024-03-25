@@ -2,13 +2,12 @@ package main
 
 import (
 	"fmt"
-	"log"
-
 	"github.com/asifrahaman13/hirego/internal/core/services"
 	"github.com/asifrahaman13/hirego/internal/handlers"
 	"github.com/asifrahaman13/hirego/internal/repository"
 	"github.com/asifrahaman13/hirego/internal/routes"
 	"github.com/gin-gonic/gin"
+	"log"
 )
 
 func main() {
@@ -26,14 +25,14 @@ func main() {
 func run() error {
 	// handlers.Base.Initialize()
 
-	msg, err := repository.InitializeDB("mongodb://localhost:27017")
+	db, err := repository.InitializeDB()
 
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println(msg)
-	docRep := repository.UserRepo.Initialize(msg)
+	fmt.Println(db)
+	docRep := repository.UserRepo.Initialize(db)
 
 	users := service.InitializeUserService(docRep)
 

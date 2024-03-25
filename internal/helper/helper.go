@@ -72,3 +72,14 @@ func Response(c *gin.Context, code int, message string, body interface{}) {
 		},
 	)
 }
+
+func JSONResponse(c *gin.Context, code int, message interface{}, body interface{}) {
+	c.JSON(
+		code,
+		gin.H{
+			"code":    code,
+			"message": message,
+			"body":    body,
+		},
+	)
+}

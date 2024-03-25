@@ -1,13 +1,9 @@
 package repository
 
 import (
-	"github.com/asifrahaman13/hirego/internal/domain"
+	"github.com/asifrahaman13/hirego/internal/core/domain"
 	"go.mongodb.org/mongo-driver/mongo"
 )
-
-type repository[T any] struct {
-	// db *mongo.Client
-}
 
 var UserRepo *UserRepository
 
@@ -22,7 +18,7 @@ func (r *UserRepository) BaseRepository(*domain.User) {
 
 func (r *UserRepository) Initialize(db *mongo.Client) *UserRepository {
 	UserRepo = &UserRepository{
-		repository: &repository[domain.User]{},
+		repository: &repository[domain.User]{db: db},
 	}
 
 	return UserRepo

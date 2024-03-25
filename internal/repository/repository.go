@@ -2,41 +2,30 @@ package repository
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	"log"
-	"os"
-	"github.com/joho/godotenv"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
+	"github.com/asifrahaman13/hirego/internal/core/domain"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
+func (r *repository[T]) GetData() ([]*domain.User, error) {
+	coll := r.db.Database("hirego").Collection("users")
+	filter := bson.D{}
 
+	cursor, err := coll.Find(context.TODO(), filter)
 
-// This repository uses sql server
-func InitializeDB(connStr string) (*mongo.Client, error) {
-
-	// Load the .env file.
-	if err := godotenv.Load(); err != nil {
-		log.Println("No .env file is specified.")
-	}
-
-	// Fetch the uri from the environment variable.
-	uri := os.Getenv("MONGODB_URI")
-
-	if uri == "" {
-		return nil, errors.New("you must set your 'MONGODB_URI' environment variable")
-	}
-
-	// Connect to the mongodb database.
-	client, err := mongo.Connect(context.TODO(), options.Client().ApplyURI(uri))
-
-	// Error handling.
 	if err != nil {
-		return nil, fmt.Errorf("error connecting to MongoDB: %s", err)
+		return nil, err
 	}
-    
-	fmt.Println("Connected to MongoDB!")
-	// Return either the client or nil in case of error.
-	return client, nil
+	defer cursor.Close(context.TODO())
+
+	var results []*domain.User
+	if err := cursor.All(context.TODO(), &results); err != nil {
+		return nil, err
+	}
+
+	for _, user := range results {
+		fmt.Printf("User ID: %s, Name: %s\n", user.Email, user.FirstName)
+	}
+
+	return results, nil
 }

@@ -3,6 +3,7 @@ package service
 import (
 	"fmt"
 	"github.com/asifrahaman13/hirego/internal/core/ports"
+	"github.com/asifrahaman13/hirego/internal/core/domain"
 )
 
 type userService struct {
@@ -15,11 +16,14 @@ func InitializeUserService(r ports.UserRepository) *userService{
 	}
 }
 
-func (s *userService) GetAllUsers() (map[string]interface{}, error) {
+func (s *userService) GetAllUsers()  ([]*domain.User, error) {
 	fmt.Print("called")
 
-	data := map[string]interface{}{
-		"name": "hello",
+
+	data, err:=s.repo.GetData()
+
+	if err!=nil{
+		panic(err)
 	}
 
 	return data, nil

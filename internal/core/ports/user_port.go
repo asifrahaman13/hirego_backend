@@ -1,11 +1,11 @@
 package ports
 
-import "github.com/asifrahaman13/hirego/internal/domain"
+import "github.com/asifrahaman13/hirego/internal/core/domain"
 
 type UserService interface {
-	GetAllUsers() (map[string]interface{}, error)
+	GetAllUsers() ([]*domain.User, error)
 }
 
 type UserRepository interface {
-	BaseRepository(*domain.User)
+	BaseRepository[*domain.User]
 }
