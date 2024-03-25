@@ -26,7 +26,7 @@ func main() {
 func run() error {
 	// handlers.Base.Initialize()
 
-	msg, err := repository.InitializeDB("sadfsdf")
+	msg, err := repository.InitializeDB("mongodb://localhost:27017")
 
 	if err != nil {
 		panic(err)
