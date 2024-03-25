@@ -53,3 +53,12 @@ func (r *UserRepository) Login(user *domain.User) (*domain.AccessToken, error) {
     return &domain.AccessToken{Token: access_token}, nil
 }
 
+
+func (r *UserRepository) ProtectedRoute(token string) (string, error) {
+	claims, err := helper.VerifyToken(token)
+	if err != nil {
+		return "", err
+	}
+
+	return claims["username"].(string), nil
+}

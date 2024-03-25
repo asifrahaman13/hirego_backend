@@ -2,6 +2,8 @@ package handlers
 
 import (
 	"fmt"
+	"net/http"
+	"strings"
 	"github.com/asifrahaman13/hirego/internal/core/domain"
 	"github.com/asifrahaman13/hirego/internal/core/ports"
 	"github.com/asifrahaman13/hirego/internal/helper"
@@ -53,7 +55,6 @@ func (h *userHandler) Signup(c *gin.Context) {
 	helper.JSONResponse(c, 200, message, nil)
 }
 
-
 func (h *userHandler) Login(c *gin.Context) {
 	// The BindJSON is used to extract the JSON data from the request body.
 	var user *domain.User
@@ -67,5 +68,32 @@ func (h *userHandler) Login(c *gin.Context) {
 	}
 
 	// Next call the helper function to send the response.
+	helper.JSONResponse(c, 200, message, nil)
+}
+
+func (h *userHandler) ProtectedRoute(c *gin.Context) {
+
+	// Extract the authorization header
+	authHeader := c.GetHeader("Authorization")
+	if authHeader == "" {
+		helper.JSONResponse(c, http.StatusUnauthorized, "Unauthorized", nil)
+		return
+	}
+
+	// Split the header value to get the token
+	parts := strings.Split(authHeader, " ")
+	if len(parts) != 2 || parts[0] != "Bearer" {
+		helper.JSONResponse(c, http.StatusUnauthorized, "Unauthorized", nil)
+		return
+	}
+
+	accessToken := parts[1]
+
+	message, err := h.userService.ProtectedRoute(accessToken)
+
+	if err != nil {
+		panic(err)
+	}
+
 	helper.JSONResponse(c, 200, message, nil)
 }

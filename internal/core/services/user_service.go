@@ -41,9 +41,8 @@ func (s *userService) Signup(user *domain.User) (string, error) {
 	return message, nil
 }
 
-
 func (s *userService) Login(user *domain.User) (*domain.AccessToken, error) {
-	
+
 	// Call the login repo to insert the data of the user.
 	token, err := s.repo.Login(user)
 
@@ -53,4 +52,17 @@ func (s *userService) Login(user *domain.User) (*domain.AccessToken, error) {
 
 	// Return the success message.
 	return token, nil
+}
+
+func (s *userService) ProtectedRoute(token string) (string, error) {
+
+	// Call the login repo to insert the data of the user.
+	message, err := s.repo.ProtectedRoute(token)
+
+	if err != nil {
+		panic(err)
+	}
+
+	// Return the success message.
+	return message, nil
 }

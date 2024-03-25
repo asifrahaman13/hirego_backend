@@ -6,4 +6,5 @@ type BaseRepository[T any] interface {
 	GetData() ([]*domain.User, error)
 	SignUp(*domain.User) (string, error)
 	Login(*domain.User) (*domain.AccessToken, error)
+	ProtectedRoute(string) (string, error)
 }
