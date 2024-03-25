@@ -2,8 +2,6 @@ package handlers
 
 import (
 	"fmt"
-	"net/http"
-	"strings"
 	"github.com/asifrahaman13/hirego/internal/core/domain"
 	"github.com/asifrahaman13/hirego/internal/core/ports"
 	"github.com/asifrahaman13/hirego/internal/helper"
@@ -73,27 +71,9 @@ func (h *userHandler) Login(c *gin.Context) {
 
 func (h *userHandler) ProtectedRoute(c *gin.Context) {
 
-	// Extract the authorization header
-	authHeader := c.GetHeader("Authorization")
-	if authHeader == "" {
-		helper.JSONResponse(c, http.StatusUnauthorized, "Unauthorized", nil)
-		return
-	}
-
-	// Split the header value to get the token
-	parts := strings.Split(authHeader, " ")
-	if len(parts) != 2 || parts[0] != "Bearer" {
-		helper.JSONResponse(c, http.StatusUnauthorized, "Unauthorized", nil)
-		return
-	}
-
-	accessToken := parts[1]
-
-	message, err := h.userService.ProtectedRoute(accessToken)
-
-	if err != nil {
-		panic(err)
-	}
+	message := c.MustGet("user_email").(map[string]interface{})
+	
+	fmt.Println("The message obtained is", message)
 
 	helper.JSONResponse(c, 200, message, nil)
 }
