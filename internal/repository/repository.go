@@ -24,7 +24,7 @@ func (r *repository[T]) GetData() ([]*domain.User, error) {
 	}
 
 	for _, user := range results {
-		fmt.Printf("User ID: %s, Name: %s\n", user.Email, user.FirstName)
+		fmt.Printf("User Email: %s, \n", user.Email)
 	}
 
 	return results, nil
