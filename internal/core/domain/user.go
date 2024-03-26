@@ -14,15 +14,15 @@ type AccessToken struct {
 }
 
 type UserInformation struct {
-	Email            string                 `json:"email"`
-	FirstName        string                 `json:"firstname"`
-	LastName         string                 `json:"lastname"`
-	PhoneNumber      string                 `json:"phonenumber"`
-	DOB              string                 `json:"dob"`
-	Address          string                 `json:"address"`
-	ProfilePicture   string                 `json:"profilepicture"`
-	Country          string                 `json:"country"`
-	State            string                 `json:"state"`
-	PushNotification string                 `json:"pushnotification"`
-	Notificationis   map[string]interface{} `json:"notificationis"`
+	Email            string                 `json:"email" bson:"email"`
+	FirstName        string                 `json:"firstname" bson:"firstname"`
+	LastName         string                 `json:"lastname" bson:"lastname"`
+	PhoneNumber      string                 `json:"phonenumber" bson:"phonenumber"`
+	DOB              string                 `json:"dob" bson:"dob"`
+	Address          string                 `json:"address" bson:"address"`
+	ProfilePicture   string                 `json:"profilepicture" bson:"profilepicture"`
+	Country          string                 `json:"country" bson:"country"`
+	State            string                 `json:"state" bson:"state"`
+	PushNotification string                 `json:"pushnotification" bson:"pushnotification"`
+	Notificationis   map[string]interface{} `json:"notificationis" bson:"notificationis"`
 }

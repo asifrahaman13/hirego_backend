@@ -79,3 +79,16 @@ func (s *userService) UserInformation(user *domain.UserInformation) (string, err
 	// Return the success message.
 	return message, nil
 }
+
+func (s *userService) GetUserInformation(email string) (*domain.UserInformation, error) {
+
+	// Call the login repo to insert the data of the user.
+	user, err := s.repo.GetUserInformation(email)
+
+	if err != nil {
+		panic(err)
+	}
+
+	// Return the success message.
+	return user, nil
+}

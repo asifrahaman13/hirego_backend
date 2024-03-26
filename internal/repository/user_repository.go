@@ -3,8 +3,10 @@ package repository
 import (
 	"context"
 	"fmt"
+
 	"github.com/asifrahaman13/hirego/internal/core/domain"
 	"github.com/asifrahaman13/hirego/internal/helper"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -63,9 +65,11 @@ func (r *UserRepository) ProtectedRoute(token string) (string, error) {
 }
 
 func (r *UserRepository) UserInformation(user *domain.UserInformation) (string, error) {
+	// Define the collection.
 	coll := r.db.Database("hirego").Collection("userinformation")
 
 	fmt.Println(user)
+	// Insert the document into the collection.
 	_, err := coll.InsertOne(context.TODO(), user)
 
 	if err != nil {
@@ -73,4 +77,23 @@ func (r *UserRepository) UserInformation(user *domain.UserInformation) (string, 
 	}
 
 	return "User information stored successfully", nil
+}
+
+func (r *UserRepository) GetUserInformation(email string) (*domain.UserInformation, error) {
+	// Define the collection.
+	coll := r.db.Database("hirego").Collection("userinformation")
+
+	var user domain.UserInformation
+
+	// Ordered representation of a BSON filter. Find all the documents with the email.
+	filter := bson.D{{Key: "email", Value: email}}
+
+	// Find the document with the email.
+	err := coll.FindOne(context.TODO(), filter).Decode(&user)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &user, nil
 }

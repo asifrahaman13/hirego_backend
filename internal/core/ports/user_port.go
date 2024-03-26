@@ -8,6 +8,7 @@ type UserService interface {
 	Login(*domain.User) (*domain.AccessToken, error)  // Returns a success or a failure message.
 	ProtectedRoute(string) (string, error)
 	UserInformation(*domain.UserInformation) (string, error)
+	GetUserInformation(string) (*domain.UserInformation, error)
 }
 
 type UserRepository interface {

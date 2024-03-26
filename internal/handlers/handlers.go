@@ -100,3 +100,19 @@ func (h *userHandler) UserInformation(c *gin.Context) {
 	// Next call the helper function to send the response.
 	helper.JSONResponse(c, 200, message, nil)
 }
+
+func (h *userHandler) GetUserInformation(c *gin.Context) {
+
+	// Update the user's email based on the user_email from the context
+	userMap := c.MustGet("user_email").(map[string]interface{})
+
+	// Call the signup service to signup the user.
+	message, err := h.userService.GetUserInformation(userMap["username"].(string))
+
+	if err != nil {
+		panic(err)
+	}
+
+	// Next call the helper function to send the response.
+	helper.JSONResponse(c, 200, message, nil)
+}

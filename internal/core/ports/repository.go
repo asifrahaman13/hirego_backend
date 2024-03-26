@@ -8,4 +8,5 @@ type BaseRepository[T any] interface {
 	Login(*domain.User) (*domain.AccessToken, error)
 	ProtectedRoute(string) (string, error)
 	UserInformation(*domain.UserInformation) (string, error)
+	GetUserInformation(string) (*domain.UserInformation, error)
 }

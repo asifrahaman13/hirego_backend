@@ -26,6 +26,7 @@ func SetupV2Routes(router *gin.Engine, middlewares ...gin.HandlerFunc) {
 		v2.GET("/users", handlers.UserHandler.GetUsers)
 		v2.GET("/userdata", handlers.UserHandler.ProtectedRoute)
 		v2.POST("/userinformation", handlers.UserHandler.UserInformation)
+		v2.GET("/userinformation", handlers.UserHandler.GetUserInformation)
 		// More routes to be added here
 	}
 }
