@@ -6,25 +6,26 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupV1Routes(router *gin.Engine, middlewares ...gin.HandlerFunc) {
+func SetupV1Routes(router *gin.Engine) {
 
 	v1 := router.Group("/auth")
 	{
-		// Add all the available middlewares which needs to be attached to the router.
-		for _, middleware := range middlewares {
-			v1.Use(middleware)
-		}
-		v1.GET("/users", handlers.UserHandler.GetUsers)
+
 		v1.POST("/signup", handlers.UserHandler.Signup)
 		v1.POST("/login", handlers.UserHandler.Login)
-		v1.GET("/userdata", handlers.UserHandler.ProtectedRoute)
+
 	}
 }
 
-func SetupV2Routes(router *gin.Engine) {
-	v2 := router.Group("/v2")
-	{
+func SetupV2Routes(router *gin.Engine, middlewares ...gin.HandlerFunc) {
+	v2 := router.Group("/user")
+	{ // Add all the available middlewares which needs to be attached to the router.
+		for _, middleware := range middlewares {
+			v2.Use(middleware)
+		}
 		v2.GET("/users", handlers.UserHandler.GetUsers)
+		v2.GET("/userdata", handlers.UserHandler.ProtectedRoute)
+		v2.POST("/userinformation", handlers.UserHandler.UserInformation)
 		// More routes to be added here
 	}
 }
@@ -32,6 +33,6 @@ func SetupV2Routes(router *gin.Engine) {
 func InitializeRoutes(router *gin.Engine) {
 
 	// Add the middleware to the parent route.
-	SetupV1Routes(router, middleware.AuthMiddleware())
-	SetupV2Routes(router)
+	SetupV1Routes(router)
+	SetupV2Routes(router, middleware.AuthMiddleware())
 }

@@ -72,8 +72,31 @@ func (h *userHandler) Login(c *gin.Context) {
 func (h *userHandler) ProtectedRoute(c *gin.Context) {
 
 	message := c.MustGet("user_email").(map[string]interface{})
-	
+
 	fmt.Println("The message obtained is", message)
 
+	helper.JSONResponse(c, 200, message, nil)
+}
+
+func (h *userHandler) UserInformation(c *gin.Context) {
+	// The BindJSON is used to extract the JSON data from the request body.
+	var user *domain.UserInformation
+	c.BindJSON(&user)
+
+	// Update the user's email based on the user_email from the context
+	userMap := c.MustGet("user_email").(map[string]interface{})
+
+	user.Email = userMap["username"].(string)
+
+	fmt.Println("The user information is", user)
+
+	// Call the signup service to signup the user.
+	message, err := h.userService.UserInformation(user)
+
+	if err != nil {
+		panic(err)
+	}
+
+	// Next call the helper function to send the response.
 	helper.JSONResponse(c, 200, message, nil)
 }

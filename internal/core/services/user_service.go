@@ -66,3 +66,16 @@ func (s *userService) ProtectedRoute(token string) (string, error) {
 	// Return the success message.
 	return message, nil
 }
+
+func (s *userService) UserInformation(user *domain.UserInformation) (string, error) {
+
+	// Call the login repo to insert the data of the user.
+	message, err := s.repo.UserInformation(user)
+
+	if err != nil {
+		panic(err)
+	}
+
+	// Return the success message.
+	return message, nil
+}

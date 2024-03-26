@@ -2,7 +2,7 @@ package repository
 
 import (
 	"context"
-
+	"fmt"
 	"github.com/asifrahaman13/hirego/internal/core/domain"
 	"github.com/asifrahaman13/hirego/internal/helper"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -43,16 +43,15 @@ func (r *UserRepository) Login(user *domain.User) (*domain.AccessToken, error) {
 
 	// Call the create token function to generate the access token.
 	access_token, err := helper.CreateToken(user.Email)
-   
+
 	// Return the access token.
 	if err != nil {
 		return nil, err
 	}
 
 	// Return the access token.
-    return &domain.AccessToken{Token: access_token}, nil
+	return &domain.AccessToken{Token: access_token}, nil
 }
-
 
 func (r *UserRepository) ProtectedRoute(token string) (string, error) {
 	claims, err := helper.VerifyToken(token)
@@ -61,4 +60,17 @@ func (r *UserRepository) ProtectedRoute(token string) (string, error) {
 	}
 
 	return claims["username"].(string), nil
+}
+
+func (r *UserRepository) UserInformation(user *domain.UserInformation) (string, error) {
+	coll := r.db.Database("hirego").Collection("userinformation")
+
+	fmt.Println(user)
+	_, err := coll.InsertOne(context.TODO(), user)
+
+	if err != nil {
+		return "", err
+	}
+
+	return "User information stored successfully", nil
 }

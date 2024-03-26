@@ -2,17 +2,15 @@ package middleware
 
 import (
 	"fmt"
-	"net/http"
-	"strings"
-
 	"github.com/asifrahaman13/hirego/internal/helper"
 	"github.com/gin-gonic/gin"
+	"net/http"
+	"strings"
 )
 
 func AuthMiddleware() gin.HandlerFunc {
 
 	return func(c *gin.Context) {
-
 
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" {
@@ -36,7 +34,6 @@ func AuthMiddleware() gin.HandlerFunc {
 		}
 
 		fmt.Println("The message is", user_email)
-
 
 		c.Set("user_email", user_email)
 
