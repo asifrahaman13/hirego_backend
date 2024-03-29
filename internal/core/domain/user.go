@@ -54,6 +54,6 @@ type WorkInformation struct {
 	Skils            map[string]interface{} `json:"skils" bson:"skils"`
 	About            string                 `json:"about" bson:"about"`
 	Hackathons       []string               `json:"hackathons" bson:"hackathons"`
-	Projects         Projects               `json:"projects" bson:"projects"`
-	WorkExperience   WorkExperience         `json:"workexperience" bson:"workexperience"`
+	Projects         []Projects             `json:"projects" bson:"projects"`
+	WorkExperience   []WorkExperience       `json:"workexperience" bson:"workexperience"`
 }
