@@ -72,15 +72,15 @@ func (r *repository[T]) GetByEmail(username string) (interface{}, error) {
 	return userInformation, nil
 }
 
-func (r *repository[T]) InsertData(username string, workinforamtion interface{}, collection string) (string, error) {
+func (r *repository[T]) InsertData(workinforamtion interface{}, collection string) (bool, error) {
 	coll := r.db.Database("hirego").Collection(collection)
 	_, err := coll.InsertOne(context.TODO(), workinforamtion)
 
 	if err != nil {
-		return "", err
+		return false, err
 	}
 
-	return "Work information added successfully", nil
+	return true, nil
 }
 
 func (r *repository[T]) GetData(username string, collection string) (interface{}, error) {

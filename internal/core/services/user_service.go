@@ -2,7 +2,6 @@ package service
 
 import (
 	"fmt"
-
 	"github.com/asifrahaman13/hirego/internal/core/domain"
 	"github.com/asifrahaman13/hirego/internal/core/ports"
 	"github.com/asifrahaman13/hirego/internal/helper"
@@ -17,10 +16,6 @@ func InitializeUserService(r ports.UserRepository) *userService {
 		repo: r,
 	}
 }
-
-// func (s *userService) Signup(user domain.User) (string, error) {
-// 	return s.repo.Create(user)
-// }
 
 // Service to signup a user.
 func (s *userService) Signup(user domain.User) (string, error) {
@@ -53,23 +48,35 @@ func (s *userService) Login(user domain.User) (domain.AccessToken, error) {
 	return accessToken, nil
 }
 
+/*
+The setUserWorkInformation function is used to set the work information of the user.
+This will be public information that will be visible to all the hr managers who signs up in the platform.
+*/
 func (s *userService) SetUserWrorkInformation(email string, workInformation domain.WorkInformation) (string, error) {
 
+	workInformation.Useremail = email
+
 	// Call the login repo to insert the data of the user.
-	message, err := s.repo.InsertData(email, workInformation, "workinformation")
+	message, err := s.repo.InsertData(workInformation, "workinformation")
 
 	if err != nil {
 		panic(err)
 	}
 
+	if !message {
+		return "Some error occured", nil
+	}
+
 	// Return the success message.
-	return message, nil
+	return "User work information stored successfully", nil
 }
 
-
+/*
+The getUserWorkInformation function is used to get the work information of the user.
+This will mainly be used by the HR managers to view the work information of the user.
+*/
 func (s *userService) GetUserWorkInformation(username string) (domain.WorkInformation, error) {
 
-	
 	// Call the login repo to insert the data of the user.
 	workInformation, err := s.repo.GetData(username, "workinformation")
 
@@ -88,6 +95,10 @@ func (s *userService) GetUserWorkInformation(username string) (domain.WorkInform
 	return info, nil
 }
 
+/*
+The GetProfileInformation function is used to get the profile information of the user.
+This will be completely private and only the ueer will be able to view this information. This is one to one.
+*/
 func (s *userService) GetProfileInformation(username string) (domain.UserInformation, error) {
 
 	// Call the login repo to insert the data of the user.
@@ -108,15 +119,24 @@ func (s *userService) GetProfileInformation(username string) (domain.UserInforma
 	return info, nil
 }
 
+/*
+This function is used to set the profile information of the user. Users will set them for profile in our website.
+*/
 func (s *userService) SetUserProfileInformation(email string, userInformation domain.UserInformation) (string, error) {
 
+	userInformation.Email = email
+
 	// Call the login repo to insert the data of the user.
-	message, err := s.repo.InsertData(email, userInformation, "userprofile")
+	message, err := s.repo.InsertData(userInformation, "userprofile")
 
 	if err != nil {
 		panic(err)
 	}
 
+	if !message {
+		return "Some error occurred", nil
+	}
+
 	// Return the success message.
-	return message, nil
+	return "Your profile information stored successfully", nil
 }

@@ -4,7 +4,7 @@ import "github.com/asifrahaman13/hirego/internal/core/domain"
 
 type UserService interface {
 	Signup(user domain.User) (string, error)
-	Login(domain.User) (domain.AccessToken, error)  // Returns a success or a failure message.
+	Login(domain.User) (domain.AccessToken, error)  
 	SetUserProfileInformation(string, domain.UserInformation) (string, error)
 	GetProfileInformation(string) (domain.UserInformation, error)
 	GetUserWorkInformation(string) (domain.WorkInformation, error)

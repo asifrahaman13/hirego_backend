@@ -33,23 +33,6 @@ func (h *userHandler) Signup(c *gin.Context) {
 
 }
 
-// func (h *userHandler) Signup(c *gin.Context) {
-
-// 	// The BindJSON is used to extract the JSON data from the request body.
-// 	var user domain.User
-// 	c.BindJSON(&user)
-
-// 	// Call the signup service to signup the user.
-// 	message, err := h.userService.Signup(user)
-
-// 	if err != nil {
-// 		panic(err)
-// 	}
-
-// 	// Next call the helper function to send the response.
-// 	helper.JSONResponse(c, 200, message, nil)
-// }
-
 func (h *userHandler) Login(c *gin.Context) {
 	// The BindJSON is used to extract the JSON data from the request body.
 	var user domain.User
@@ -101,7 +84,6 @@ func (h *userHandler) GetUserWorkInformation(c *gin.Context) {
 	helper.JSONResponse(c, 200, message, nil)
 }
 
-
 func (h *userHandler) SetUserProfileInformation(c *gin.Context) {
 	// The BindJSON is used to extract the JSON data from the request body.
 	var userInformation domain.UserInformation
@@ -121,11 +103,9 @@ func (h *userHandler) SetUserProfileInformation(c *gin.Context) {
 	helper.JSONResponse(c, 200, message, nil)
 }
 
-
 func (h *userHandler) GetProfileInformation(c *gin.Context) {
 	// Update the user's email based on the user_email from the context
 	userMap := c.MustGet("user_email").(map[string]interface{})
-
 
 	// Call the signup service to signup the user.
 	message, err := h.userService.GetProfileInformation(userMap["username"].(string))
@@ -137,5 +117,3 @@ func (h *userHandler) GetProfileInformation(c *gin.Context) {
 	// Next call the helper function to send the response.
 	helper.JSONResponse(c, 200, message, nil)
 }
-
-
