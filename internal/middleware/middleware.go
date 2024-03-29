@@ -2,10 +2,10 @@ package middleware
 
 import (
 	"fmt"
-	"net/http"
-	"strings"
 	"github.com/asifrahaman13/hirego/internal/helper"
 	"github.com/gin-gonic/gin"
+	"net/http"
+	"strings"
 )
 
 func AuthMiddleware() gin.HandlerFunc {
@@ -42,5 +42,3 @@ func AuthMiddleware() gin.HandlerFunc {
 		c.Next()
 	}
 }
-
-

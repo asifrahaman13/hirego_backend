@@ -5,7 +5,6 @@ import (
 	"github.com/asifrahaman13/hirego/internal/core/services"
 	"github.com/asifrahaman13/hirego/internal/handlers"
 	"log"
-	// "github.com/asifrahaman13/hirego/internal/middleware"
 	"github.com/asifrahaman13/hirego/internal/repository"
 	"github.com/asifrahaman13/hirego/internal/routes"
 	"github.com/gin-gonic/gin"

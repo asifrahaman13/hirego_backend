@@ -100,3 +100,32 @@ func (r *repository[T]) GetData(username string, collection string) (interface{}
 
 	return result, nil
 }
+
+func (r *repository[T]) GetAll(collection string) ([]map[string]interface{}, error) {
+	coll := r.db.Database("hirego").Collection(collection)
+
+	cursor, err := coll.Find(context.TODO(), bson.D{})
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(context.TODO())
+
+	var results []map[string]interface{}
+
+	for cursor.Next(context.TODO()) {
+		var result map[string]interface{}
+		err := cursor.Decode(&result)
+		if err != nil {
+			return nil, err
+		}
+		results = append(results, result)
+	}
+
+	if err := cursor.Err(); err != nil {
+		return nil, err
+	}
+
+	fmt.Println("The result is here", results)
+
+	return results, nil
+}

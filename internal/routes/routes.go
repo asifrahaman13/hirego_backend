@@ -28,6 +28,8 @@ func SetupV2Routes(router *gin.Engine, middlewares ...gin.HandlerFunc) {
 		v2.POST("/userprofileinformation", handlers.UserHandler.SetUserProfileInformation)
 		v2.GET("/userprofileinformation", handlers.UserHandler.GetProfileInformation)
 		v2.POST("/userworkinformation", handlers.UserHandler.SetUserWrorkInformation)
+		v2.GET("/jobposting", handlers.HRHandler.GetJobPosting)
+		v2.GET("/alljobposting", handlers.HRHandler.GetAllJobPosting)
 	}
 }
 
@@ -39,6 +41,7 @@ func SetupHrRoutes(router *gin.Engine, middlewares ...gin.HandlerFunc) {
 		}
 		hr.POST("/hrprofileinformation", handlers.HRHandler.SetHrProfileInformation)
 		hr.GET("/hrprofileinformation", handlers.HRHandler.GetProfileInformation)
+		hr.POST("/jobposting", handlers.HRHandler.JobPosting)
 	}
 }
 

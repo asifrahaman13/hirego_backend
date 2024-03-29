@@ -83,3 +83,47 @@ func (h *hrHandler) GetProfileInformation(c *gin.Context) {
 	// Next call the helper function to send the response.
 	helper.JSONResponse(c, 200, hrInformation, nil)
 }
+
+func (h *hrHandler) JobPosting(c *gin.Context) {
+	var jobPosting domain.JobPosting
+	c.BindJSON(&jobPosting)
+
+	jobPosting.UserID= c.MustGet("username").(map[string]interface{})["username"].(string)
+
+	// Call the service to post the job.
+	message, err := h.hrService.JobPosting(jobPosting)
+
+	if err != nil {
+		panic(err)
+	}
+
+	// Next call the helper function to send the response.
+	helper.JSONResponse(c, 200, message, nil)
+}
+
+func(h *hrHandler) GetJobPosting(c *gin.Context) {
+	// Get the hr's email from the context
+	hrMap := c.MustGet("username").(map[string]interface{})
+
+	// Call the service to get the hr's profile information.
+	jobPosting, err := h.hrService.GetJobPosting(hrMap["username"].(string))
+
+	if err != nil {
+		panic(err)
+	}
+
+	// Next call the helper function to send the response.
+	helper.JSONResponse(c, 200, jobPosting, nil)
+}
+
+func(h *hrHandler) GetAllJobPosting(c *gin.Context) {
+	// Call the service to get the hr's profile information.
+	jobPosting, err := h.hrService.GetAllJobPosting()
+
+	if err != nil {
+		panic(err)
+	}
+
+	// Next call the helper function to send the response.
+	helper.JSONResponse(c, 200, jobPosting, nil)
+}
