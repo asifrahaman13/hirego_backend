@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"github.com/asifrahaman13/hirego/internal/core/services"
 	"github.com/asifrahaman13/hirego/internal/handlers"
+	"log"
 	// "github.com/asifrahaman13/hirego/internal/middleware"
 	"github.com/asifrahaman13/hirego/internal/repository"
 	"github.com/asifrahaman13/hirego/internal/routes"
@@ -42,11 +42,14 @@ func run() error {
 	// 1. User repository.
 	// 2. User service.
 	// 3. User handler.
-	docRep := repository.UserRepo.Initialize(db)
+	userRep := repository.UserRepo.Initialize(db)
+	hrRep := repository.HRRepo.Initialize(db)
 
-	users := service.InitializeUserService(docRep)
+	users := service.InitializeUserService(userRep)
+	hr_manager := service.InitializeHRService(hrRep)
 
 	handlers.UserHandler.Initialize(users)
+	handlers.HRHandler.Initialize(hr_manager)
 
 	return nil
 }
