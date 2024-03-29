@@ -57,10 +57,10 @@ func (r *repository[T]) Create(model T) (string, error) {
 	return "User signed up successfully", nil
 }
 
-func (r *repository[T]) GetByEmail(username string) (interface{}, error) {
+func (r *repository[T]) GetByUser(username string) (interface{}, error) {
 	coll := r.db.Database("hirego").Collection("userprofile")
 
-	filter := bson.D{{Key: "email", Value: username}}
+	filter := bson.D{{Key: "username", Value: username}}
 
 	var userInformation domain.UserInformation
 
@@ -86,7 +86,7 @@ func (r *repository[T]) InsertData(workinforamtion interface{}, collection strin
 func (r *repository[T]) GetData(username string, collection string) (interface{}, error) {
 	coll := r.db.Database("hirego").Collection(collection)
 
-	filter := bson.D{{Key: "useremail", Value: username}}
+	filter := bson.D{{Key: "username", Value: username}}
 
 	var result domain.WorkInformation
 	err := coll.FindOne(context.TODO(), filter).Decode(&result)

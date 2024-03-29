@@ -33,8 +33,10 @@ func (s *userService) Signup(user domain.User) (string, error) {
 
 func (s *userService) Login(user domain.User) (domain.AccessToken, error) {
 
+
+
 	// Call the login repo to insert the data of the user.
-	token, err := helper.CreateToken(user.Email)
+	token, err := helper.CreateToken(user.Username)
 
 	if err != nil {
 		panic(err)
@@ -52,9 +54,9 @@ func (s *userService) Login(user domain.User) (domain.AccessToken, error) {
 The setUserWorkInformation function is used to set the work information of the user.
 This will be public information that will be visible to all the hr managers who signs up in the platform.
 */
-func (s *userService) SetUserWrorkInformation(email string, workInformation domain.WorkInformation) (string, error) {
+func (s *userService) SetUserWrorkInformation(username string, workInformation domain.WorkInformation) (string, error) {
 
-	workInformation.Useremail = email
+	workInformation.Username = username
 
 	// Call the login repo to insert the data of the user.
 	message, err := s.repo.InsertData(workInformation, "workinformation")
@@ -102,7 +104,7 @@ This will be completely private and only the ueer will be able to view this info
 func (s *userService) GetProfileInformation(username string) (domain.UserInformation, error) {
 
 	// Call the login repo to insert the data of the user.
-	userInformation, err := s.repo.GetByEmail(username)
+	userInformation, err := s.repo.GetByUser(username)
 
 	if err != nil {
 		panic(err)
@@ -122,9 +124,9 @@ func (s *userService) GetProfileInformation(username string) (domain.UserInforma
 /*
 This function is used to set the profile information of the user. Users will set them for profile in our website.
 */
-func (s *userService) SetUserProfileInformation(email string, userInformation domain.UserInformation) (string, error) {
+func (s *userService) SetUserProfileInformation(username string, userInformation domain.UserInformation) (string, error) {
 
-	userInformation.Email = email
+	userInformation.Username = username
 
 	// Call the login repo to insert the data of the user.
 	message, err := s.repo.InsertData(userInformation, "userprofile")

@@ -2,6 +2,7 @@ package domain
 
 type User struct {
 	Email    string `json:"email" bson:"email"`
+	Username string `json:"username" bson:"username"`
 	Password string `json:"password" bson:"password"`
 }
 
@@ -14,6 +15,7 @@ type AccessToken struct {
 }
 
 type UserInformation struct {
+	Username         string                 `json:"username" bson:"username"`
 	Email            string                 `json:"email" bson:"email"`
 	FirstName        string                 `json:"firstname" bson:"firstname"`
 	LastName         string                 `json:"lastname" bson:"lastname"`
@@ -49,6 +51,7 @@ type Projects struct {
 }
 
 type WorkInformation struct {
+	Username         string                 `json:"username" bson:"username"`
 	Useremail        string                 `json:"useremail" bson:"useremail"`
 	ExpectedStripend string                 `json:"expectedstripend" bson:"expectedstripend"`
 	Skils            map[string]interface{} `json:"skils" bson:"skils"`

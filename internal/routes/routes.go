@@ -33,7 +33,7 @@ func SetupV3Routes(router *gin.Engine) {
 	v3 := router.Group("/public")
 	{
 
-		v3.GET("/userpublicinformation", handlers.UserHandler.GetUserWorkInformation)
+		v3.POST("/userpublicinformation", handlers.UserHandler.GetUserWorkInformation)
 
 		// More routes to be added here
 	}

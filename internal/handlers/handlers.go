@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"fmt"
+
 	"github.com/asifrahaman13/hirego/internal/core/domain"
 	"github.com/asifrahaman13/hirego/internal/core/ports"
 	"github.com/asifrahaman13/hirego/internal/helper"
@@ -38,7 +40,7 @@ func (h *userHandler) Login(c *gin.Context) {
 	var user domain.User
 	c.BindJSON(&user)
 
-	// Call the signup service to signup the user.
+	// Call the Login service to signup the user.
 	message, err := h.userService.Login(user)
 
 	if err != nil {
@@ -55,7 +57,7 @@ func (h *userHandler) SetUserWrorkInformation(c *gin.Context) {
 	c.BindJSON(&workinformation)
 
 	// Update the user's email based on the user_email from the context
-	userMap := c.MustGet("user_email").(map[string]interface{})
+	userMap := c.MustGet("username").(map[string]interface{})
 
 	// Call the signup service to signup the user.
 	message, err := h.userService.SetUserWrorkInformation(userMap["username"].(string), workinformation)
@@ -73,6 +75,7 @@ func (h *userHandler) GetUserWorkInformation(c *gin.Context) {
 	var username domain.UserName
 	c.BindJSON(&username)
 
+	fmt.Println("asdfffffffffffffffffffffffffffffffffffffffffffffffffffffff",username)
 	// Call the signup service to signup the user.
 	message, err := h.userService.GetUserWorkInformation(username.Username)
 
@@ -90,7 +93,7 @@ func (h *userHandler) SetUserProfileInformation(c *gin.Context) {
 	c.BindJSON(&userInformation)
 
 	// Update the user's email based on the user_email from the context
-	userMap := c.MustGet("user_email").(map[string]interface{})
+	userMap := c.MustGet("username").(map[string]interface{})
 
 	// Call the signup service to signup the user.
 	message, err := h.userService.SetUserProfileInformation(userMap["username"].(string), userInformation)
@@ -105,7 +108,7 @@ func (h *userHandler) SetUserProfileInformation(c *gin.Context) {
 
 func (h *userHandler) GetProfileInformation(c *gin.Context) {
 	// Update the user's email based on the user_email from the context
-	userMap := c.MustGet("user_email").(map[string]interface{})
+	userMap := c.MustGet("username").(map[string]interface{})
 
 	// Call the signup service to signup the user.
 	message, err := h.userService.GetProfileInformation(userMap["username"].(string))

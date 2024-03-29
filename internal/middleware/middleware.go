@@ -27,17 +27,17 @@ func AuthMiddleware() gin.HandlerFunc {
 		accessToken := parts[1]
 
 		fmt.Println("Access token: ", accessToken)
-		userEmail, err := helper.VerifyToken(accessToken)
+		userName, err := helper.VerifyToken(accessToken)
 		if err != nil {
 			helper.JSONResponse(c, http.StatusUnauthorized, "Unauthorized", nil)
 			c.Abort() // Abort the request
 			return
 		}
 
-		fmt.Println("User email: ", userEmail)
+		fmt.Println("User email: ", userName)
 
 		// Set the user email in the context for later use
-		c.Set("user_email", userEmail)
+		c.Set("username", userName)
 
 		c.Next()
 	}
