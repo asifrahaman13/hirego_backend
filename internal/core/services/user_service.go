@@ -92,3 +92,16 @@ func (s *userService) GetUserInformation(email string) (*domain.UserInformation,
 	// Return the success message.
 	return user, nil
 }
+
+func (s *userService) SetUserWrorkInformation(username string, workinformation *domain.WorkInformation) (string, error) {
+	
+	// Call the login repo to insert the data of the user.
+	_, err := s.repo.SetUserWrorkInformation(username, workinformation)
+
+	if err != nil {
+		panic(err)
+	}
+
+	// Return the success message.
+	return "Data is stored successfully", nil
+}

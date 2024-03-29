@@ -9,4 +9,6 @@ type BaseRepository[T any] interface {
 	ProtectedRoute(string) (string, error)
 	UserInformation(*domain.UserInformation) (string, error)
 	GetUserInformation(string) (*domain.UserInformation, error)
+	SetUserWrorkInformation(string, *domain.WorkInformation) (string, error)
+
 }

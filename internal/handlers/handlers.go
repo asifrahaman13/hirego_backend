@@ -21,20 +21,7 @@ func (h *userHandler) Initialize(userserv ports.UserService) {
 	}
 }
 
-func (h *userHandler) GetUsers(c *gin.Context) {
-	users, err := h.userService.GetAllUsers()
 
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Println("The result is", users)
-
-	// helper.Response(c, 200, "hey there", nil)
-
-	helper.JSONResponse(c, 200, users, nil)
-
-}
 
 func (h *userHandler) Signup(c *gin.Context) {
 
@@ -108,6 +95,25 @@ func (h *userHandler) GetUserInformation(c *gin.Context) {
 
 	// Call the signup service to signup the user.
 	message, err := h.userService.GetUserInformation(userMap["username"].(string))
+
+	if err != nil {
+		panic(err)
+	}
+
+	// Next call the helper function to send the response.
+	helper.JSONResponse(c, 200, message, nil)
+}
+
+func (h *userHandler) SetUserWrorkInformation(c *gin.Context) {
+
+	var workinformation *domain.WorkInformation
+	c.BindJSON(&workinformation)
+
+	// Update the user's email based on the user_email from the context
+	userMap := c.MustGet("user_email").(map[string]interface{})
+
+	// Call the signup service to signup the user.
+	message, err := h.userService.SetUserWrorkInformation(userMap["username"].(string), workinformation )
 
 	if err != nil {
 		panic(err)

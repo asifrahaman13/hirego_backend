@@ -97,3 +97,19 @@ func (r *UserRepository) GetUserInformation(email string) (*domain.UserInformati
 
 	return &user, nil
 }
+
+func (r *UserRepository) SetUserWrorkInformation(username string, workinformation *domain.WorkInformation) (string, error) {
+
+	workinformation.Useremail = username
+
+	// Define the collection.
+	coll := r.db.Database("hirego").Collection("workinformation")
+
+	_, err := coll.InsertOne(context.TODO(), workinformation)
+
+	if err != nil {
+		return "Something went wrong", err
+	}
+
+	return "Data stored successfully", nil
+}
