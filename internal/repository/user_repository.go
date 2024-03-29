@@ -2,7 +2,6 @@ package repository
 
 import (
 	"github.com/asifrahaman13/hirego/internal/core/domain"
-
 	"go.mongodb.org/mongo-driver/mongo"
 )
 

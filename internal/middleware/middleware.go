@@ -1,10 +1,11 @@
 package middleware
 
 import (
-	"github.com/asifrahaman13/hirego/internal/helper"
-	"github.com/gin-gonic/gin"
+	"fmt"
 	"net/http"
 	"strings"
+	"github.com/asifrahaman13/hirego/internal/helper"
+	"github.com/gin-gonic/gin"
 )
 
 func AuthMiddleware() gin.HandlerFunc {
@@ -24,12 +25,16 @@ func AuthMiddleware() gin.HandlerFunc {
 		}
 
 		accessToken := parts[1]
+
+		fmt.Println("Access token: ", accessToken)
 		userEmail, err := helper.VerifyToken(accessToken)
 		if err != nil {
 			helper.JSONResponse(c, http.StatusUnauthorized, "Unauthorized", nil)
 			c.Abort() // Abort the request
 			return
 		}
+
+		fmt.Println("User email: ", userEmail)
 
 		// Set the user email in the context for later use
 		c.Set("user_email", userEmail)

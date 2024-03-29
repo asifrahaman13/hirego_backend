@@ -2,13 +2,11 @@ package repository
 
 import (
 	"context"
-	"fmt"
-
-	"github.com/asifrahaman13/hirego/internal/core/domain"
-	"github.com/asifrahaman13/hirego/internal/helper"
-	"go.mongodb.org/mongo-driver/bson"
 	"errors"
+	"fmt"
+	"github.com/asifrahaman13/hirego/internal/core/domain"
 	"github.com/joho/godotenv"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
@@ -47,29 +45,6 @@ func InitializeDB() (*mongo.Client, error) {
 	return client, nil
 }
 
-func (r *repository[T]) GetData() (domain.User, error) {
-	coll := r.db.Database("hirego").Collection("users")
-	filter := bson.D{}
-
-	cursor, err := coll.Find(context.TODO(), filter)
-
-	if err != nil {
-		return domain.User{}, err
-	}
-	defer cursor.Close(context.TODO())
-
-	var results []domain.User
-	if err := cursor.All(context.TODO(), &results); err != nil {
-		return domain.User{}, err
-	}
-
-	for _, user := range results {
-		fmt.Printf("User Email: %s, \n", user.Email)
-	}
-
-	return domain.User{}, nil
-}
-
 // Function to store the userdata
 func (r *repository[T]) Create(model T) (string, error) {
 	coll := r.db.Database("hirego").Collection("users")
@@ -82,91 +57,43 @@ func (r *repository[T]) Create(model T) (string, error) {
 	return "User signed up successfully", nil
 }
 
-func (r *UserRepository) Login(user domain.User) (domain.AccessToken, error) {
+func (r *repository[T]) GetByEmail(username string) (interface{}, error) {
+	coll := r.db.Database("hirego").Collection("userprofile")
 
-	// Call the create token function to generate the access token.
-	access_token, err := helper.CreateToken(user.Email)
+	filter := bson.D{{Key: "email", Value: username}}
 
-	// Return the access token.
+	var userInformation domain.UserInformation
+
+	err := coll.FindOne(context.TODO(), filter).Decode(&userInformation)
 	if err != nil {
-		return domain.AccessToken{}, err
+		return nil, err
 	}
 
-	// Return the access token.
-	return domain.AccessToken{Token: access_token}, nil
+	return userInformation, nil
 }
 
-func (r *UserRepository) ProtectedRoute(token string) (string, error) {
-	claims, err := helper.VerifyToken(token)
-	if err != nil {
-		return "", err
-	}
-
-	return claims["username"].(string), nil
-}
-
-func (r *UserRepository) UserInformation(user domain.UserInformation) (string, error) {
-	// Define the collection.
-	coll := r.db.Database("hirego").Collection("userinformation")
-
-	fmt.Println(user)
-	// Insert the document into the collection.
-	_, err := coll.InsertOne(context.TODO(), user)
+func (r *repository[T]) InsertData(username string, workinforamtion interface{}, collection string) (string, error) {
+	coll := r.db.Database("hirego").Collection(collection)
+	_, err := coll.InsertOne(context.TODO(), workinforamtion)
 
 	if err != nil {
 		return "", err
 	}
 
-	return "User information stored successfully", nil
+	return "Work information added successfully", nil
 }
 
-func (r *UserRepository) GetUserInformation(email string) (domain.UserInformation, error) {
-	// Define the collection.
-	coll := r.db.Database("hirego").Collection("userinformation")
+func (r *repository[T]) GetData(username string, collection string) (interface{}, error) {
+	coll := r.db.Database("hirego").Collection(collection)
 
-	var user domain.UserInformation
+	filter := bson.D{{Key: "useremail", Value: username}}
 
-	// Ordered representation of a BSON filter. Find all the documents with the email.
-	filter := bson.D{{Key: "email", Value: email}}
-
-	// Find the document with the email.
-	err := coll.FindOne(context.TODO(), filter).Decode(&user)
+	var result domain.WorkInformation
+	err := coll.FindOne(context.TODO(), filter).Decode(&result)
 
 	if err != nil {
-		return domain.UserInformation{}, err
+		return nil, err
 	}
 
-	return user, nil
-}
-
-func (r *UserRepository) SetUserWrorkInformation(username string, workinformation domain.WorkInformation) (string, error) {
-
-	workinformation.Useremail = username
-
-	// Define the collection.
-	coll := r.db.Database("hirego").Collection("workinformation")
-
-	_, err := coll.InsertOne(context.TODO(), workinformation)
-
-	if err != nil {
-		return "Something went wrong", err
-	}
-
-	return "Data stored successfully", nil
-}
-
-func (r *UserRepository) GetUserWorkInformation(domain.UserName) (domain.WorkInformation, error) {
-	// Define the collection.
-	coll := r.db.Database("hirego").Collection("workinformation")
-
-	var workinformation domain.WorkInformation
-
-	// Find the document with the email.
-	err := coll.FindOne(context.TODO(), bson.D{}).Decode(&workinformation)
-
-	if err != nil {
-		return domain.WorkInformation{}, err
-	}
-
-	return workinformation, nil
+	return result, nil
 }

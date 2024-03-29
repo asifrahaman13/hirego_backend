@@ -2,7 +2,7 @@ package routes
 
 import (
 	"github.com/asifrahaman13/hirego/internal/handlers"
-	// "github.com/asifrahaman13/hirego/internal/middleware"
+	"github.com/asifrahaman13/hirego/internal/middleware"
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,29 +12,29 @@ func SetupV1Routes(router *gin.Engine) {
 	{
 
 		v1.POST("/signup", handlers.UserHandler.Signup)
-		// v1.POST("/login", handlers.UserHandler.Login)
+		v1.POST("/login", handlers.UserHandler.Login)
 
 	}
 }
 
-// func SetupV2Routes(router *gin.Engine, middlewares ...gin.HandlerFunc) {
-// 	v2 := router.Group("/user")
-// 	{ // Add all the available middlewares which needs to be attached to the router.
-// 		for _, middleware := range middlewares {
-// 			v2.Use(middleware)
-// 		}
-// 		v2.POST("/userinformation", handlers.UserHandler.UserInformation)
-// 		v2.GET("/account-information", handlers.UserHandler.GetUserInformation)
-// 		v2.POST("/userworkinformation", handlers.UserHandler.SetUserWrorkInformation)
-// 	}
-// }
+func SetupV2Routes(router *gin.Engine, middlewares ...gin.HandlerFunc) {
+	v2 := router.Group("/user")
+	{ // Add all the available middlewares which needs to be attached to the router.
+		for _, middleware := range middlewares {
+			v2.Use(middleware)
+		}
+		v2.POST("/userprofileinformation", handlers.UserHandler.SetUserProfileInformation)
+		v2.GET("/userprofileinformation", handlers.UserHandler.GetProfileInformation)
+		v2.POST("/userworkinformation", handlers.UserHandler.SetUserWrorkInformation)
+	}
+}
 
 func SetupV3Routes(router *gin.Engine) {
 	v3 := router.Group("/public")
-	{ 
+	{
 
-		v3.GET("/userworkinformation", handlers.HRHandler.Sample)
-		
+		v3.GET("/userpublicinformation", handlers.UserHandler.GetUserWorkInformation)
+
 		// More routes to be added here
 	}
 }
@@ -43,6 +43,6 @@ func InitializeRoutes(router *gin.Engine) {
 
 	// Add the middleware to the parent route.
 	SetupV1Routes(router)
-	// SetupV2Routes(router, middleware.AuthMiddleware())
+	SetupV2Routes(router, middleware.AuthMiddleware())
 	SetupV3Routes(router)
 }

@@ -53,5 +53,8 @@ func VerifyToken(tokenString string) (map[string]interface{}, error) {
 		return nil, fmt.Errorf("invalid token claims")
 	}
 
+	// Return the claims
+	fmt.Println("claims", claims)
+
 	return claims, nil
 }

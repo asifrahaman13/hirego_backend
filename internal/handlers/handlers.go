@@ -1,11 +1,9 @@
 package handlers
 
 import (
-	// "fmt"
 	"github.com/asifrahaman13/hirego/internal/core/domain"
 	"github.com/asifrahaman13/hirego/internal/core/ports"
 	"github.com/asifrahaman13/hirego/internal/helper"
-	// "github.com/asifrahaman13/hirego/internal/helper"
 	"github.com/gin-gonic/gin"
 )
 
@@ -32,7 +30,7 @@ func (h *userHandler) Signup(c *gin.Context) {
 		panic(err)
 	}
 	helper.JSONResponse(c, 200, message, nil)
-	
+
 }
 
 // func (h *userHandler) Signup(c *gin.Context) {
@@ -52,102 +50,92 @@ func (h *userHandler) Signup(c *gin.Context) {
 // 	helper.JSONResponse(c, 200, message, nil)
 // }
 
-// func (h *userHandler) Login(c *gin.Context) {
-// 	// The BindJSON is used to extract the JSON data from the request body.
-// 	var user domain.User
-// 	c.BindJSON(&user)
+func (h *userHandler) Login(c *gin.Context) {
+	// The BindJSON is used to extract the JSON data from the request body.
+	var user domain.User
+	c.BindJSON(&user)
 
-// 	// Call the signup service to signup the user.
-// 	message, err := h.userService.Login(user)
+	// Call the signup service to signup the user.
+	message, err := h.userService.Login(user)
 
-// 	if err != nil {
-// 		panic(err)
-// 	}
+	if err != nil {
+		panic(err)
+	}
 
-// 	// Next call the helper function to send the response.
-// 	helper.JSONResponse(c, 200, message, nil)
-// }
+	// Next call the helper function to send the response.
+	helper.JSONResponse(c, 200, message, nil)
+}
 
-// func (h *userHandler) ProtectedRoute(c *gin.Context) {
+func (h *userHandler) SetUserWrorkInformation(c *gin.Context) {
 
-// 	message := c.MustGet("user_email").(map[string]interface{})
+	var workinformation domain.WorkInformation
+	c.BindJSON(&workinformation)
 
-// 	fmt.Println("The message obtained is", message)
+	// Update the user's email based on the user_email from the context
+	userMap := c.MustGet("user_email").(map[string]interface{})
 
-// 	helper.JSONResponse(c, 200, message, nil)
-// }
+	// Call the signup service to signup the user.
+	message, err := h.userService.SetUserWrorkInformation(userMap["username"].(string), workinformation)
 
-// func (h *userHandler) UserInformation(c *gin.Context) {
-// 	// The BindJSON is used to extract the JSON data from the request body.
-// 	var user domain.UserInformation
-// 	c.BindJSON(&user)
+	if err != nil {
+		panic(err)
+	}
 
-// 	// Update the user's email based on the user_email from the context
-// 	userMap := c.MustGet("user_email").(map[string]interface{})
+	// Next call the helper function to send the response.
+	helper.JSONResponse(c, 200, message, nil)
+}
 
-// 	user.Email = userMap["username"].(string)
+func (h *userHandler) GetUserWorkInformation(c *gin.Context) {
 
-// 	fmt.Println("The user information is", user)
+	var username domain.UserName
+	c.BindJSON(&username)
 
-// 	// Call the signup service to signup the user.
-// 	message, err := h.userService.UserInformation(user)
+	// Call the signup service to signup the user.
+	message, err := h.userService.GetUserWorkInformation(username.Username)
 
-// 	if err != nil {
-// 		panic(err)
-// 	}
+	if err != nil {
+		panic(err)
+	}
 
-// 	// Next call the helper function to send the response.
-// 	helper.JSONResponse(c, 200, message, nil)
-// }
-
-// func (h *userHandler) GetUserInformation(c *gin.Context) {
-
-// 	// Update the user's email based on the user_email from the context
-// 	userMap := c.MustGet("user_email").(map[string]interface{})
-
-// 	// Call the signup service to signup the user.
-// 	message, err := h.userService.GetUserInformation(userMap["username"].(string))
-
-// 	if err != nil {
-// 		panic(err)
-// 	}
-
-// 	// Next call the helper function to send the response.
-// 	helper.JSONResponse(c, 200, message, nil)
-// }
-
-// func (h *userHandler) SetUserWrorkInformation(c *gin.Context) {
-
-// 	var workinformation domain.WorkInformation
-// 	c.BindJSON(&workinformation)
-
-// 	// Update the user's email based on the user_email from the context
-// 	userMap := c.MustGet("user_email").(map[string]interface{})
-
-// 	// Call the signup service to signup the user.
-// 	message, err := h.userService.SetUserWrorkInformation(userMap["username"].(string), workinformation)
-
-// 	if err != nil {
-// 		panic(err)
-// 	}
-
-// 	// Next call the helper function to send the response.
-// 	helper.JSONResponse(c, 200, message, nil)
-// }
-
-// func (h *userHandler) GetUserWorkInformation(c *gin.Context) {
-
-// 	var username domain.UserName
-// 	c.BindJSON(&username)
+	// Next call the helper function to send the response.
+	helper.JSONResponse(c, 200, message, nil)
+}
 
 
-// 	// Call the signup service to signup the user.
-// 	message, err := h.userService.GetUserWorkInformation(username)
+func (h *userHandler) SetUserProfileInformation(c *gin.Context) {
+	// The BindJSON is used to extract the JSON data from the request body.
+	var userInformation domain.UserInformation
+	c.BindJSON(&userInformation)
 
-// 	if err != nil {
-// 		panic(err)
-// 	}
+	// Update the user's email based on the user_email from the context
+	userMap := c.MustGet("user_email").(map[string]interface{})
 
-// 	// Next call the helper function to send the response.
-// 	helper.JSONResponse(c, 200, message, nil)
-// }
+	// Call the signup service to signup the user.
+	message, err := h.userService.SetUserProfileInformation(userMap["username"].(string), userInformation)
+
+	if err != nil {
+		panic(err)
+	}
+
+	// Next call the helper function to send the response.
+	helper.JSONResponse(c, 200, message, nil)
+}
+
+
+func (h *userHandler) GetProfileInformation(c *gin.Context) {
+	// Update the user's email based on the user_email from the context
+	userMap := c.MustGet("user_email").(map[string]interface{})
+
+
+	// Call the signup service to signup the user.
+	message, err := h.userService.GetProfileInformation(userMap["username"].(string))
+
+	if err != nil {
+		panic(err)
+	}
+
+	// Next call the helper function to send the response.
+	helper.JSONResponse(c, 200, message, nil)
+}
+
+
