@@ -46,8 +46,8 @@ func InitializeDB() (*mongo.Client, error) {
 }
 
 // Function to store the userdata
-func (r *repository[T]) Create(model T) (string, error) {
-	coll := r.db.Database("hirego").Collection("users")
+func (r *repository[T]) Create(model T, collection string) (string, error) {
+	coll := r.db.Database("hirego").Collection(collection)
 	_, err := coll.InsertOne(context.TODO(), model)
 
 	if err != nil {
@@ -70,13 +70,14 @@ func (r *repository[T]) GetByField(field string, field_value string, collection 
 		return nil, err
 	}
 
-
 	return userInformation, nil
 }
 
 func (r *repository[T]) InsertData(workinforamtion interface{}, collection string) (bool, error) {
 	coll := r.db.Database("hirego").Collection(collection)
+	
 	_, err := coll.InsertOne(context.TODO(), workinforamtion)
+
 
 	if err != nil {
 		return false, err

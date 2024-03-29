@@ -13,6 +13,8 @@ func SetupV1Routes(router *gin.Engine) {
 
 		v1.POST("/signup", handlers.UserHandler.Signup)
 		v1.POST("/login", handlers.UserHandler.Login)
+		v1.POST("/hrsignup", handlers.HRHandler.Signup)
+		v1.POST("/hrlogin", handlers.HRHandler.Login)
 
 	}
 }
@@ -26,6 +28,17 @@ func SetupV2Routes(router *gin.Engine, middlewares ...gin.HandlerFunc) {
 		v2.POST("/userprofileinformation", handlers.UserHandler.SetUserProfileInformation)
 		v2.GET("/userprofileinformation", handlers.UserHandler.GetProfileInformation)
 		v2.POST("/userworkinformation", handlers.UserHandler.SetUserWrorkInformation)
+	}
+}
+
+func SetupHrRoutes(router *gin.Engine, middlewares ...gin.HandlerFunc) {
+	hr := router.Group("/hr")
+	{
+		for _, middleware := range middlewares {
+			hr.Use(middleware)
+		}
+		hr.POST("/hrprofileinformation", handlers.HRHandler.SetHrProfileInformation)
+		hr.GET("/hrprofileinformation", handlers.HRHandler.GetProfileInformation)
 	}
 }
 
@@ -44,5 +57,6 @@ func InitializeRoutes(router *gin.Engine) {
 	// Add the middleware to the parent route.
 	SetupV1Routes(router)
 	SetupV2Routes(router, middleware.AuthMiddleware())
+	SetupHrRoutes(router, middleware.AuthMiddleware())
 	SetupV3Routes(router)
 }
