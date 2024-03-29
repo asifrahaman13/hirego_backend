@@ -1,7 +1,6 @@
 package middleware
 
 import (
-
 	"github.com/asifrahaman13/hirego/internal/helper"
 	"github.com/gin-gonic/gin"
 	"net/http"

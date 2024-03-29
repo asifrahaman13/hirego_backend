@@ -47,33 +47,33 @@ func InitializeDB() (*mongo.Client, error) {
 	return client, nil
 }
 
-func (r *repository[T]) GetData() ([]domain.User, error) {
+func (r *repository[T]) GetData() (domain.User, error) {
 	coll := r.db.Database("hirego").Collection("users")
 	filter := bson.D{}
 
 	cursor, err := coll.Find(context.TODO(), filter)
 
 	if err != nil {
-		return nil, err
+		return domain.User{}, err
 	}
 	defer cursor.Close(context.TODO())
 
 	var results []domain.User
 	if err := cursor.All(context.TODO(), &results); err != nil {
-		return nil, err
+		return domain.User{}, err
 	}
 
 	for _, user := range results {
 		fmt.Printf("User Email: %s, \n", user.Email)
 	}
 
-	return results, nil
+	return domain.User{}, nil
 }
 
 // Function to store the userdata
-func (r *UserRepository) SignUp(user domain.User) (string, error) {
+func (r *repository[T]) Create(model T) (string, error) {
 	coll := r.db.Database("hirego").Collection("users")
-	_, err := coll.InsertOne(context.TODO(), user)
+	_, err := coll.InsertOne(context.TODO(), model)
 
 	if err != nil {
 		return "", err

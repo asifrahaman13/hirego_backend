@@ -2,10 +2,11 @@ package handlers
 
 import (
 	// "fmt"
-	// "github.com/asifrahaman13/hirego/internal/core/domain"
+	"github.com/asifrahaman13/hirego/internal/core/domain"
 	"github.com/asifrahaman13/hirego/internal/core/ports"
+	"github.com/asifrahaman13/hirego/internal/helper"
 	// "github.com/asifrahaman13/hirego/internal/helper"
-	// "github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin"
 )
 
 var UserHandler *userHandler
@@ -19,6 +20,19 @@ func (h *userHandler) Initialize(userserv ports.UserService) {
 	UserHandler = &userHandler{
 		userService: userserv,
 	}
+}
+
+func (h *userHandler) Signup(c *gin.Context) {
+	var user domain.User
+	c.BindJSON(&user)
+
+	message, err := h.userService.Signup(user)
+
+	if err != nil {
+		panic(err)
+	}
+	helper.JSONResponse(c, 200, message, nil)
+	
 }
 
 // func (h *userHandler) Signup(c *gin.Context) {

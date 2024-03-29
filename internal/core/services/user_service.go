@@ -1,7 +1,7 @@
 package service
 
 import (
-	// "github.com/asifrahaman13/hirego/internal/core/domain"
+	"github.com/asifrahaman13/hirego/internal/core/domain"
 	"github.com/asifrahaman13/hirego/internal/core/ports"
 )
 
@@ -15,18 +15,9 @@ func InitializeUserService(r ports.UserRepository) *userService {
 	}
 }
 
-// func (s *userService) GetAllUsers() ([]domain.User, error) {
-    
-// 	// Call the get data repo to get the data of the user.
-// 	data, err := s.repo.GetData()
-   
-// 	if err != nil {
-// 		panic(err)
-// 	}
-
-// 	return data, nil
-
-// }
+func (s *userService) Signup(user domain.User) (string, error) {
+	return s.repo.Create(user)
+}
 
 // // Service to signup a user.
 // func (s *userService) Signup(user domain.User) (string, error) {
