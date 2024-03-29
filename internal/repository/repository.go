@@ -57,17 +57,19 @@ func (r *repository[T]) Create(model T) (string, error) {
 	return "User signed up successfully", nil
 }
 
-func (r *repository[T]) GetByUser(username string) (interface{}, error) {
-	coll := r.db.Database("hirego").Collection("userprofile")
+func (r *repository[T]) GetByField(field string, field_value string, collection string) (interface{}, error) {
+	coll := r.db.Database("hirego").Collection(collection)
 
-	filter := bson.D{{Key: "username", Value: username}}
+	filter := bson.D{{Key: field, Value: field_value}}
 
-	var userInformation domain.UserInformation
+	var userInformation map[string]interface{}
 
 	err := coll.FindOne(context.TODO(), filter).Decode(&userInformation)
+	fmt.Println("88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888",userInformation)
 	if err != nil {
 		return nil, err
 	}
+
 
 	return userInformation, nil
 }

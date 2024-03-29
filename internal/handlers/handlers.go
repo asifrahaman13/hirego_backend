@@ -1,8 +1,6 @@
 package handlers
 
 import (
-	"fmt"
-
 	"github.com/asifrahaman13/hirego/internal/core/domain"
 	"github.com/asifrahaman13/hirego/internal/core/ports"
 	"github.com/asifrahaman13/hirego/internal/helper"
@@ -75,7 +73,7 @@ func (h *userHandler) GetUserWorkInformation(c *gin.Context) {
 	var username domain.UserName
 	c.BindJSON(&username)
 
-	fmt.Println("asdfffffffffffffffffffffffffffffffffffffffffffffffffffffff",username)
+
 	// Call the signup service to signup the user.
 	message, err := h.userService.GetUserWorkInformation(username.Username)
 

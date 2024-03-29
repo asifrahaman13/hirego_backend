@@ -2,9 +2,11 @@ package service
 
 import (
 	"fmt"
+
 	"github.com/asifrahaman13/hirego/internal/core/domain"
 	"github.com/asifrahaman13/hirego/internal/core/ports"
 	"github.com/asifrahaman13/hirego/internal/helper"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type userService struct {
@@ -32,8 +34,6 @@ func (s *userService) Signup(user domain.User) (string, error) {
 }
 
 func (s *userService) Login(user domain.User) (domain.AccessToken, error) {
-
-
 
 	// Call the login repo to insert the data of the user.
 	token, err := helper.CreateToken(user.Username)
@@ -102,24 +102,41 @@ The GetProfileInformation function is used to get the profile information of the
 This will be completely private and only the ueer will be able to view this information. This is one to one.
 */
 func (s *userService) GetProfileInformation(username string) (domain.UserInformation, error) {
+    // Call the login repo to insert the data of the user.
+    userInformation, err := s.repo.GetByField("username", username, "userprofile")
+    if err != nil {
+        return domain.UserInformation{}, err
+    }
 
-	// Call the login repo to insert the data of the user.
-	userInformation, err := s.repo.GetByUser(username)
+    // Convert userInformation to a map if necessary.
+    userInfoMap, ok := userInformation.(map[string]interface{})
+    if !ok {
+        return domain.UserInformation{}, fmt.Errorf("userInformation is not a map[string]interface{}")
+    }
 
-	if err != nil {
-		panic(err)
-	}
+    // Populate the domain.UserInformation struct with values from the map.
+    user := domain.UserInformation{
+        ID:               userInfoMap["_id"].(primitive.ObjectID),
+        Username:         userInfoMap["username"].(string),
+        Email:            userInfoMap["email"].(string),
+        FirstName:        userInfoMap["firstname"].(string),
+        LastName:         userInfoMap["lastname"].(string),
+        PhoneNumber:      userInfoMap["phonenumber"].(string),
+        DOB:              userInfoMap["dob"].(string),
+        Address:          userInfoMap["address"].(string),
+        ProfilePicture:   userInfoMap["profilepicture"].(string),
+        Country:          userInfoMap["country"].(string),
+        State:            userInfoMap["state"].(string),
+        PushNotification: userInfoMap["pushnotification"].(string),
+        Notificationis:   userInfoMap["notificationis"].(map[string]interface{}),
+    }
 
-	// Perform a type assertion to convert workInformation to domain.WorkInformation.
-	info, ok := userInformation.(domain.UserInformation)
-	if !ok {
-		// Handle the case where the type assertion fails.
-		return domain.UserInformation{}, fmt.Errorf("failed to convert workInformation to domain.WorkInformation")
-	}
-
-	// Return the success message.
-	return info, nil
+    // Return the populated domain.UserInformation instance.
+    return user, nil
 }
+
+
+
 
 /*
 This function is used to set the profile information of the user. Users will set them for profile in our website.
