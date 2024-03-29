@@ -16,9 +16,10 @@ func InitializeUserService(r ports.UserRepository) *userService {
 }
 
 func (s *userService) GetAllUsers() ([]*domain.User, error) {
-
+    
+	// Call the get data repo to get the data of the user.
 	data, err := s.repo.GetData()
-
+   
 	if err != nil {
 		panic(err)
 	}
@@ -94,7 +95,7 @@ func (s *userService) GetUserInformation(email string) (*domain.UserInformation,
 }
 
 func (s *userService) SetUserWrorkInformation(username string, workinformation *domain.WorkInformation) (string, error) {
-	
+
 	// Call the login repo to insert the data of the user.
 	_, err := s.repo.SetUserWrorkInformation(username, workinformation)
 
@@ -104,4 +105,18 @@ func (s *userService) SetUserWrorkInformation(username string, workinformation *
 
 	// Return the success message.
 	return "Data is stored successfully", nil
+}
+
+
+func (s *userService) GetUserWorkInformation(username *domain.UserName) (*domain.WorkInformation, error) {
+	
+	// Call the login repo to insert the data of the user.
+	workinformation, err := s.repo.GetUserWorkInformation(username)
+
+	if err != nil {
+		panic(err)
+	}
+
+	// Return the success message.
+	return workinformation, nil
 }

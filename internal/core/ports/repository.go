@@ -10,5 +10,5 @@ type BaseRepository[T any] interface {
 	UserInformation(*domain.UserInformation) (string, error)
 	GetUserInformation(string) (*domain.UserInformation, error)
 	SetUserWrorkInformation(string, *domain.WorkInformation) (string, error)
-
+	GetUserWorkInformation(*domain.UserName) (*domain.WorkInformation, error)
 }

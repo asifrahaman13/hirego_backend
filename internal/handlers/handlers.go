@@ -21,8 +21,6 @@ func (h *userHandler) Initialize(userserv ports.UserService) {
 	}
 }
 
-
-
 func (h *userHandler) Signup(c *gin.Context) {
 
 	// The BindJSON is used to extract the JSON data from the request body.
@@ -113,7 +111,24 @@ func (h *userHandler) SetUserWrorkInformation(c *gin.Context) {
 	userMap := c.MustGet("user_email").(map[string]interface{})
 
 	// Call the signup service to signup the user.
-	message, err := h.userService.SetUserWrorkInformation(userMap["username"].(string), workinformation )
+	message, err := h.userService.SetUserWrorkInformation(userMap["username"].(string), workinformation)
+
+	if err != nil {
+		panic(err)
+	}
+
+	// Next call the helper function to send the response.
+	helper.JSONResponse(c, 200, message, nil)
+}
+
+func (h *userHandler) GetUserWorkInformation(c *gin.Context) {
+
+	var username *domain.UserName
+	c.BindJSON(&username)
+
+
+	// Call the signup service to signup the user.
+	message, err := h.userService.GetUserWorkInformation(username)
 
 	if err != nil {
 		panic(err)

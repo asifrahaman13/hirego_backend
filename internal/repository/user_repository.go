@@ -113,3 +113,20 @@ func (r *UserRepository) SetUserWrorkInformation(username string, workinformatio
 
 	return "Data stored successfully", nil
 }
+
+
+func (r *UserRepository) GetUserWorkInformation(*domain.UserName) (*domain.WorkInformation, error) {
+	// Define the collection.
+	coll := r.db.Database("hirego").Collection("workinformation")
+
+	var workinformation *domain.WorkInformation
+
+	// Find the document with the email.
+	err := coll.FindOne(context.TODO(), bson.D{}).Decode(&workinformation)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return workinformation, nil
+}

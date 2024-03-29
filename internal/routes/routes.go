@@ -26,6 +26,15 @@ func SetupV2Routes(router *gin.Engine, middlewares ...gin.HandlerFunc) {
 		v2.POST("/userinformation", handlers.UserHandler.UserInformation)
 		v2.GET("/account-information", handlers.UserHandler.GetUserInformation)
 		v2.POST("/userworkinformation", handlers.UserHandler.SetUserWrorkInformation)
+	}
+}
+
+func SetupV3Routes(router *gin.Engine) {
+	v3 := router.Group("/public")
+	{ 
+
+		v3.POST("/userworkinformation", handlers.UserHandler.GetUserWorkInformation)
+		
 		// More routes to be added here
 	}
 }
@@ -35,4 +44,5 @@ func InitializeRoutes(router *gin.Engine) {
 	// Add the middleware to the parent route.
 	SetupV1Routes(router)
 	SetupV2Routes(router, middleware.AuthMiddleware())
+	SetupV3Routes(router)
 }

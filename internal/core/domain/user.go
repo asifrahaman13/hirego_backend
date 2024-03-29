@@ -5,6 +5,10 @@ type User struct {
 	Password string `json:"password" bson:"password"`
 }
 
+type UserName struct {
+	Username string `json:"username" bson:"username"`
+}
+
 type AccessToken struct {
 	Token string `json:"token"`
 }
