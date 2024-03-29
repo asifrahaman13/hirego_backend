@@ -23,12 +23,15 @@ func (h *userHandler) Initialize(userserv ports.UserService) {
 func (h *userHandler) Signup(c *gin.Context) {
 	var user domain.User
 	c.BindJSON(&user)
-
+   
+	// Call the signup service to signup the user.
 	message, err := h.userService.Signup(user)
 
 	if err != nil {
 		panic(err)
 	}
+
+	// Next call the helper function to send the response.
 	helper.JSONResponse(c, 200, message, nil)
 
 }
@@ -57,7 +60,7 @@ func (h *userHandler) SetUserWrorkInformation(c *gin.Context) {
 	// Update the user's email based on the user_email from the context
 	userMap := c.MustGet("username").(map[string]interface{})
 
-	// Call the signup service to signup the user.
+	// Call the service to save the user work information.
 	message, err := h.userService.SetUserWrorkInformation(userMap["username"].(string), workinformation)
 
 	if err != nil {
@@ -93,7 +96,7 @@ func (h *userHandler) SetUserProfileInformation(c *gin.Context) {
 	// Update the user's email based on the user_email from the context
 	userMap := c.MustGet("username").(map[string]interface{})
 
-	// Call the signup service to signup the user.
+	// Call the Profile service to save the user profile.
 	message, err := h.userService.SetUserProfileInformation(userMap["username"].(string), userInformation)
 
 	if err != nil {
@@ -108,7 +111,7 @@ func (h *userHandler) GetProfileInformation(c *gin.Context) {
 	// Update the user's email based on the user_email from the context
 	userMap := c.MustGet("username").(map[string]interface{})
 
-	// Call the signup service to signup the user.
+	// Call the service to get the user profile information.
 	message, err := h.userService.GetProfileInformation(userMap["username"].(string))
 
 	if err != nil {

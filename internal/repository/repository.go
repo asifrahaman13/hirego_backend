@@ -65,7 +65,7 @@ func (r *repository[T]) GetByField(field string, field_value string, collection 
 	var userInformation map[string]interface{}
 
 	err := coll.FindOne(context.TODO(), filter).Decode(&userInformation)
-	fmt.Println("88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888",userInformation)
+
 	if err != nil {
 		return nil, err
 	}
