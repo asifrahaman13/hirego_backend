@@ -5,7 +5,7 @@ import (
 	"github.com/asifrahaman13/hirego/internal/core/domain"
 	"github.com/asifrahaman13/hirego/internal/core/ports"
 	"github.com/asifrahaman13/hirego/internal/helper"
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 type userService struct {
@@ -41,8 +41,8 @@ func (s *userService) Login(user domain.User) (domain.AccessToken, error) {
 		panic(err)
 	}
 
-	// Return the success message.
-
+	
+	// Define the access token instance.
 	accessToken := domain.AccessToken{
 		Token: token,
 	}
@@ -85,15 +85,26 @@ func (s *userService) GetUserWorkInformation(username string) (domain.WorkInform
 		panic(err)
 	}
 
-	// Perform a type assertion to convert workInformation to domain.WorkInformation.
-	info, ok := workInformation.(domain.WorkInformation)
-	if !ok {
-		// Handle the case where the type assertion fails.
-		return domain.WorkInformation{}, fmt.Errorf("failed to convert workInformation to domain.WorkInformation")
+	// Define a variable to store the converted data.
+	var convertedData domain.WorkInformation
+
+	// Convert the data into bson json like document.
+	bsonBytes, err := bson.Marshal(workInformation)
+
+	if err != nil {
+		panic(err)
 	}
 
+	// Convert bson to golang data structure.
+	err = bson.Unmarshal(bsonBytes, &convertedData)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println("convertedData", convertedData)
+
 	// Return the success message.
-	return info, nil
+	return convertedData, nil
 }
 
 /*
@@ -107,28 +118,21 @@ func (s *userService) GetProfileInformation(username string) (domain.UserInforma
 	if err != nil {
 		return domain.UserInformation{}, err
 	}
+	// Define a variable to store the converted data.
+	var user domain.UserInformation
 
-	// Convert userInformation to a map if necessary.
-	userInfoMap, ok := userInformation.(map[string]interface{})
-	if !ok {
-		return domain.UserInformation{}, fmt.Errorf("userInformation is not a map[string]interface{}")
+	// Convert the data into bson json like document.
+	bsonBytes, err := bson.Marshal(userInformation)
+
+	if err != nil {
+		panic(err)
 	}
 
-	// Populate the domain.UserInformation struct with values from the map.
-	user := domain.UserInformation{
-		ID:               userInfoMap["_id"].(primitive.ObjectID),
-		Username:         userInfoMap["username"].(string),
-		Email:            userInfoMap["email"].(string),
-		FirstName:        userInfoMap["firstname"].(string),
-		LastName:         userInfoMap["lastname"].(string),
-		PhoneNumber:      userInfoMap["phonenumber"].(string),
-		DOB:              userInfoMap["dob"].(string),
-		Address:          userInfoMap["address"].(string),
-		ProfilePicture:   userInfoMap["profilepicture"].(string),
-		Country:          userInfoMap["country"].(string),
-		State:            userInfoMap["state"].(string),
-		PushNotification: userInfoMap["pushnotification"].(string),
-		Notificationis:   userInfoMap["notificationis"].(map[string]interface{}),
+	// Convert bson to golang data structure.
+	err = bson.Unmarshal(bsonBytes, &user)
+
+	if err != nil {
+		panic(err)
 	}
 
 	// Return the populated domain.UserInformation instance.

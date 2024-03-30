@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/asifrahaman13/hirego/internal/core/domain"
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -91,7 +90,7 @@ func (r *repository[T]) GetData(username string, collection string) (interface{}
 
 	filter := bson.D{{Key: "username", Value: username}}
 
-	var result domain.WorkInformation
+	var result interface{} 
 	err := coll.FindOne(context.TODO(), filter).Decode(&result)
 
 	if err != nil {
