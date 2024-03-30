@@ -103,10 +103,12 @@ func (h *hrHandler) JobPosting(c *gin.Context) {
 
 func(h *hrHandler) GetJobPosting(c *gin.Context) {
 	// Get the hr's email from the context
-	hrMap := c.MustGet("username").(map[string]interface{})
+	// hrMap := c.MustGet("username").(map[string]interface{})
+	var jobPosting domain.JobPosting
+	c.BindJSON(&jobPosting)
 
 	// Call the service to get the hr's profile information.
-	jobPosting, err := h.hrService.GetJobPosting(hrMap["username"].(string))
+	jobPosting, err := h.hrService.GetJobPosting(jobPosting.JobID)
 
 	if err != nil {
 		panic(err)
