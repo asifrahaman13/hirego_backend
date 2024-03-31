@@ -129,3 +129,18 @@ func(h *hrHandler) GetAllJobPosting(c *gin.Context) {
 	// Next call the helper function to send the response.
 	helper.JSONResponse(c, 200, jobPosting, nil)
 }
+
+func(h *hrHandler) HrSpecificJobPosting(c *gin.Context) {
+	// Get the hr's email from the context
+	hrMap := c.MustGet("username").(map[string]interface{})
+
+	// Call the service to get the hr's profile information.
+	jobPosting, err := h.hrService.HrSpecificJobPosting(hrMap["username"].(string))
+
+	if err != nil {
+		panic(err)
+	}
+
+	// Next call the helper function to send the response.
+	helper.JSONResponse(c, 200, jobPosting, nil)
+}

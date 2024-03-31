@@ -10,6 +10,7 @@ type HRService interface {
 	JobPosting(domain.JobPosting) (string, error)
 	GetJobPosting(string) (domain.JobPosting, error)
 	GetAllJobPosting() ([]domain.JobPosting, error)
+	HrSpecificJobPosting(string) ([]domain.JobPosting, error)
 }
 
 type HRRepository interface {

@@ -14,7 +14,7 @@ func Response(c *gin.Context, code int, message string, body interface{}) {
 		gin.H{
 			"code":       code,
 			"statusText": http.StatusText(code),
-			"message":    message,
+			"data":    message,
 			"body":       body,
 		},
 	)
@@ -25,7 +25,7 @@ func JSONResponse(c *gin.Context, code int, message interface{}, body interface{
 		code,
 		gin.H{
 			"code":    code,
-			"message": message,
+			"data": message,
 			"body":    body,
 		},
 	)

@@ -45,15 +45,16 @@ func InitializeDB() (*mongo.Client, error) {
 }
 
 // Function to store the userdata
-func (r *repository[T]) Create(model T, collection string) (string, error) {
+func (r *repository[T]) Create(model T, collection string) (bool, error) {
+	
 	coll := r.db.Database("hirego").Collection(collection)
 	_, err := coll.InsertOne(context.TODO(), model)
 
 	if err != nil {
-		return "", err
+		return false, err
 	}
 
-	return "User signed up successfully", nil
+	return true, nil
 }
 
 func (r *repository[T]) GetByField(field string, field_value string, collection string) (interface{}, error) {
@@ -125,6 +126,35 @@ func (r *repository[T]) GetAll(collection string) ([]map[string]interface{}, err
 	}
 
 	fmt.Println("The result is here", results)
+
+	return results, nil
+}
+
+func (r *repository[T]) GetAllByField(field string, field_value string, collection string) ([]map[string]interface{}, error) {
+	coll := r.db.Database("hirego").Collection(collection)
+
+	filter := bson.D{{Key: field, Value: field_value}}
+
+	cursor, err := coll.Find(context.TODO(), filter)
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(context.TODO())
+
+	var results []map[string]interface{}
+
+	for cursor.Next(context.TODO()) {
+		var result map[string]interface{}
+		err := cursor.Decode(&result)
+		if err != nil {
+			return nil, err
+		}
+		results = append(results, result)
+	}
+
+	if err := cursor.Err(); err != nil {
+		return nil, err
+	}
 
 	return results, nil
 }

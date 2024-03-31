@@ -28,8 +28,13 @@ func (s *userService) Signup(user domain.User) (string, error) {
 		panic(err)
 	}
 
+	if !message {
+		return "Failed to insert data", nil
+	
+	}
+
 	// Return the success message.
-	return message, nil
+	return "Successfully stored the information", nil
 }
 
 func (s *userService) Login(user domain.User) (domain.AccessToken, error) {

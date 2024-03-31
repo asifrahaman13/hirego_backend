@@ -17,6 +17,9 @@ func InitializeHRService(r ports.HRRepository) *hrService {
 	}
 }
 
+/*
+The Signup function is used to signup a hr manager.
+*/
 func (s *hrService) Signup(hr domain.HrManager) (string, error) {
 
 	// Call the sign up repo to insert the data of the user.
@@ -26,10 +29,17 @@ func (s *hrService) Signup(hr domain.HrManager) (string, error) {
 		panic(err)
 	}
 
+	if !message {
+		return "Failed to insert data", nil
+	}
+
 	// Return the success message.
-	return message, nil
+	return "Successfully stored the data", nil
 }
 
+/*
+The Login function is used to login a hr manager.
+*/
 func (s *hrService) Login(hr domain.HrManager) (domain.AccessToken, error) {
 
 	// Call the login repo to insert the data of the user.
@@ -47,6 +57,9 @@ func (s *hrService) Login(hr domain.HrManager) (domain.AccessToken, error) {
 	return accessToken, nil
 }
 
+/*
+The SetHrProfileInformation function is used to set the profile information of the hr manager.
+*/
 func (s *hrService) SetHrProfileInformation(username string, hrInformation domain.HrProfileInformation) (string, error) {
 
 	hrInformation.Username = username
@@ -134,6 +147,35 @@ func (s *hrService) GetAllJobPosting() ([]domain.JobPosting, error) {
 	jobPostings, err := s.repo.GetAll("jobposting")
 	if err != nil {
 		return nil, err
+	}
+
+	var postings []domain.JobPosting
+	for _, jp := range jobPostings {
+		// Marshal the MongoDB document into a byte slice.
+		bsonBytes, err := bson.Marshal(jp)
+		if err != nil {
+			return nil, err
+		}
+
+		// Unmarshal the byte slice into a domain.JobPosting struct.
+		var posting domain.JobPosting
+		err = bson.Unmarshal(bsonBytes, &posting)
+		if err != nil {
+			return nil, err
+		}
+
+		postings = append(postings, posting)
+	}
+
+	return postings, nil
+}
+
+
+func (s *hrService) HrSpecificJobPosting(username string) ([]domain.JobPosting, error) {
+	// Call the login repo to insert the data of the user.
+	jobPostings, err := s.repo.GetAllByField("userID", username, "jobposting")
+	if err != nil {
+		panic(err)
 	}
 
 	var postings []domain.JobPosting
