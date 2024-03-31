@@ -165,3 +165,21 @@ func (s *userService) SetUserProfileInformation(username string, userInformation
 	// Return the success message.
 	return "Your profile information stored successfully", nil
 }
+
+
+func (s *userService) ApplyForJobPosting(jobPosting domain.JobApplication) (string, error) {
+
+	// Call the login repo to insert the data of the user.
+	message, err := s.repo.InsertData(jobPosting, "jobapplications")
+
+	if err != nil {
+		panic(err)
+	}
+
+	if !message {
+		return "Some error occurred", nil
+	}
+
+	// Return the success message.
+	return "You have successfully applied for the job", nil
+}

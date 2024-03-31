@@ -40,3 +40,9 @@ type JobPosting struct {
 	PublishedAt string `json:"publishedAt" bson:"publishedAt"`
 	ExpiresAt   string `json:"expiresAt" bson:"expiresAt"`
 }
+
+type JobApplication struct {
+	ID        primitive.ObjectID `json:"id,omitempty" bson:"_id,omitempty"`
+	JobID     string             `json:"jobID" bson:"jobID"`
+	UserID    string             `json:"userID" bson:"userID"`
+}

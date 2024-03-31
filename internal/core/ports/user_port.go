@@ -9,8 +9,10 @@ type UserService interface {
 	GetProfileInformation(string) (domain.UserInformation, error)
 	GetUserWorkInformation(string) (domain.WorkInformation, error)
 	SetUserWrorkInformation(string, domain.WorkInformation) (string, error)
+	ApplyForJobPosting(domain.JobApplication) (string, error)
 }
 
 type UserRepository interface {
 	BaseRepository[domain.User]
 }
+ 

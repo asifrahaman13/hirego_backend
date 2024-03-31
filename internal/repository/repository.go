@@ -59,23 +59,27 @@ func (r *repository[T]) Create(model T, collection string) (bool, error) {
 
 func (r *repository[T]) GetByField(field string, field_value string, collection string) (interface{}, error) {
 	coll := r.db.Database("hirego").Collection(collection)
-
+    
+	// Define the filter.
 	filter := bson.D{{Key: field, Value: field_value}}
+    
+	// Define the result.
+	var result map[string]interface{}
 
-	var userInformation map[string]interface{}
-
-	err := coll.FindOne(context.TODO(), filter).Decode(&userInformation)
+	// Find the data from the collection.
+	err := coll.FindOne(context.TODO(), filter).Decode(&result)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return userInformation, nil
+	return result, nil
 }
 
 func (r *repository[T]) InsertData(workinforamtion interface{}, collection string) (bool, error) {
 	coll := r.db.Database("hirego").Collection(collection)
 	
+	// Insert the data into the collection.
 	_, err := coll.InsertOne(context.TODO(), workinforamtion)
 
 
@@ -88,10 +92,14 @@ func (r *repository[T]) InsertData(workinforamtion interface{}, collection strin
 
 func (r *repository[T]) GetData(username string, collection string) (interface{}, error) {
 	coll := r.db.Database("hirego").Collection(collection)
-
+    
+	// Define the filter.
 	filter := bson.D{{Key: "username", Value: username}}
-
+    
+	// Define the data structure of the  result.
 	var result interface{} 
+
+	// Find the data from the collection.
 	err := coll.FindOne(context.TODO(), filter).Decode(&result)
 
 	if err != nil {
@@ -103,21 +111,34 @@ func (r *repository[T]) GetData(username string, collection string) (interface{}
 
 func (r *repository[T]) GetAll(collection string) ([]map[string]interface{}, error) {
 	coll := r.db.Database("hirego").Collection(collection)
-
+    
+	// Find all the data from the collection.
 	cursor, err := coll.Find(context.TODO(), bson.D{})
+
 	if err != nil {
 		return nil, err
 	}
+
+	// Close the cursor after the function ends.
 	defer cursor.Close(context.TODO())
 
+	// Define the data structure of result.
 	var results []map[string]interface{}
-
+    
+	// Iterate over the cursor to get the data.
 	for cursor.Next(context.TODO()) {
+
+		// Define the data structure to decode the individual elements later.
 		var result map[string]interface{}
+
+		// Decode the data from the cursor.
 		err := cursor.Decode(&result)
+
 		if err != nil {
 			return nil, err
 		}
+
+		// Append the result to the results lists.
 		results = append(results, result)
 	}
 
@@ -132,23 +153,36 @@ func (r *repository[T]) GetAll(collection string) ([]map[string]interface{}, err
 
 func (r *repository[T]) GetAllByField(field string, field_value string, collection string) ([]map[string]interface{}, error) {
 	coll := r.db.Database("hirego").Collection(collection)
+    
 
+	// Define the filter.
 	filter := bson.D{{Key: field, Value: field_value}}
 
+	// Find all the data from the collection.
 	cursor, err := coll.Find(context.TODO(), filter)
+
 	if err != nil {
 		return nil, err
 	}
+
+	// Close the cursor after the function ends.
 	defer cursor.Close(context.TODO())
-
+    
+	// Define the data structure of result.
 	var results []map[string]interface{}
-
+    
+	// Iterate over the cursor to get the data.
 	for cursor.Next(context.TODO()) {
+		// Define the data structure to decode the individual elements later.
 		var result map[string]interface{}
+
+		// Decode the data from the cursor.
 		err := cursor.Decode(&result)
 		if err != nil {
 			return nil, err
 		}
+
+		// Append the result to the results lists.
 		results = append(results, result)
 	}
 

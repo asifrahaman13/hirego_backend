@@ -121,3 +121,24 @@ func (h *userHandler) GetProfileInformation(c *gin.Context) {
 	// Next call the helper function to send the response.
 	helper.JSONResponse(c, 200, message, nil)
 }
+
+func (s *userHandler) ApplyForJobPosting(c *gin.Context) {
+
+	var jobPosting domain.JobApplication
+	c.BindJSON(&jobPosting)
+
+	userMap := c.MustGet("username").(map[string]interface{})
+
+	jobPosting.UserID=userMap["username"].(string)
+
+	// Call the login repo to insert the data of the user.
+	message, err := s.userService.ApplyForJobPosting(jobPosting)
+
+	if err != nil {
+		panic(err)
+	}
+
+	// Next call the helper function to send the response.
+	helper.Response(c, 200, message, nil)
+
+}
