@@ -46,13 +46,14 @@ func SetupHrRoutes(router *gin.Engine, middlewares ...gin.HandlerFunc) {
 	}
 }
 
-// func SetupV3Routes(router *gin.Engine) {
-// 	v3 := router.Group("/public")
-// 	{
+func SetupPublicRoutes(router *gin.Engine) {
+	public := router.Group("/public")
+	{
+		public.GET("/internships", handlers.HRHandler.GetAllJobPosting)
 
-// 		//Sample public route
-// 	}
-// }
+		//Sample public route
+	}
+}
 
 func InitializeRoutes(router *gin.Engine) {
 
@@ -60,5 +61,5 @@ func InitializeRoutes(router *gin.Engine) {
 	SetupV1Routes(router)
 	SetupUserRoutes(router, middleware.AuthMiddleware())
 	SetupHrRoutes(router, middleware.AuthMiddleware())
-	// SetupV3Routes(router)
+	SetupPublicRoutes(router)
 }

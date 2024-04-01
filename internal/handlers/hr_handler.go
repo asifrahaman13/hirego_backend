@@ -144,3 +144,5 @@ func(h *hrHandler) HrSpecificJobPosting(c *gin.Context) {
 	// Next call the helper function to send the response.
 	helper.JSONResponse(c, 200, jobPosting, nil)
 }
+
+
