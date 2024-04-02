@@ -40,7 +40,7 @@ func (s *userService) Signup(user domain.User) (string, error) {
 func (s *userService) Login(user domain.User) (domain.AccessToken, error) {
 
 	// Call the login repo to insert the data of the user.
-	token, err := helper.CreateToken(user.Username)
+	token, err := helper.CreateToken(user.Username, "user")
 
 	if err != nil {
 		panic(err)

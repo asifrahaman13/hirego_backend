@@ -8,6 +8,8 @@ import (
 	"github.com/asifrahaman13/hirego/internal/repository"
 	"github.com/asifrahaman13/hirego/internal/routes"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-contrib/cors"
+
 )
 
 func main() {
@@ -16,6 +18,9 @@ func main() {
 	}
 
 	parent_route := gin.Default()
+    
+	// Allow all origins.
+	parent_route.Use(cors.Default())
 
 	// Add the middleware to the parent route.
 	// Middleware should be added before initializing the routes.
@@ -23,6 +28,7 @@ func main() {
 
 	// Initialize the routes.
 	routes.InitializeRoutes(parent_route)
+
 
 	log.Fatal(parent_route.Run())
 }

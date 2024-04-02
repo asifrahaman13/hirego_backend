@@ -43,7 +43,7 @@ The Login function is used to login a hr manager.
 func (s *hrService) Login(hr domain.HrManager) (domain.AccessToken, error) {
 
 	// Call the login repo to insert the data of the user.
-	token, err := helper.CreateToken(hr.Username)
+	token, err := helper.CreateToken(hr.Username, "hr_manager")
 
 	if err != nil {
 		panic(err)

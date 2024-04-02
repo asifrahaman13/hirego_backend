@@ -8,13 +8,14 @@ import (
 
 var secretKey = []byte("SECRET_KEY")
 
-func CreateToken(username string) (string, error) {
+func CreateToken(username string, user_type string) (string, error) {
 
 	// Create the token
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
 		jwt.MapClaims{
 			"username": username,
 			"exp":      time.Now().Add(time.Hour * 24).Unix(),
+			"user_type": user_type,
 		})
     
 	// Sign the token	
