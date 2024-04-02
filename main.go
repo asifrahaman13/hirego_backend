@@ -2,36 +2,39 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"time"
+
 	"github.com/asifrahaman13/hirego/internal/core/services"
 	"github.com/asifrahaman13/hirego/internal/handlers"
-	"log"
 	"github.com/asifrahaman13/hirego/internal/repository"
 	"github.com/asifrahaman13/hirego/internal/routes"
-	"github.com/gin-gonic/gin"
 	"github.com/gin-contrib/cors"
-
+	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	if err := run(); err != nil {
-		log.Fatal(err)
-	}
+    if err := run(); err != nil {
+        log.Fatal(err)
+    }
 
-	parent_route := gin.Default()
-    
-	// Allow all origins.
-	parent_route.Use(cors.Default())
+    parent_route := gin.Default()
 
-	// Add the middleware to the parent route.
-	// Middleware should be added before initializing the routes.
-	// parent_route.Use(middleware.AuthMiddleware())
+    // Allow all origins and proxy all requests.
+    parent_route.Use(cors.New(cors.Config{
+        AllowOrigins:     []string{"*"},
+        AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+        AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
+        AllowCredentials: true,
+        MaxAge:           12 * time.Hour,
+    }))
 
-	// Initialize the routes.
-	routes.InitializeRoutes(parent_route)
+    // Initialize the routes.
+    routes.InitializeRoutes(parent_route)
 
-
-	log.Fatal(parent_route.Run())
+    log.Fatal(parent_route.Run())
 }
+
 
 func run() error {
 	// Initialize the database.

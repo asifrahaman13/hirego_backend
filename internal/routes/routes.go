@@ -26,8 +26,8 @@ func SetupUserRoutes(router *gin.Engine, middlewares ...gin.HandlerFunc) {
 		user.POST("/userprofileinformation", handlers.UserHandler.SetUserProfileInformation)
 		user.GET("/userprofileinformation", handlers.UserHandler.GetProfileInformation)
 		user.POST("/userworkinformation", handlers.UserHandler.SetUserWrorkInformation)
-		user.POST("/jobposting", handlers.HRHandler.GetJobPosting)
-		user.GET("/alljobposting", handlers.HRHandler.GetAllJobPosting)
+		user.POST("/intenship", handlers.HRHandler.GetJobPosting)
+		user.GET("/intenships", handlers.HRHandler.GetAllJobPosting)
 		user.POST("/applyforjobposting", handlers.UserHandler.ApplyForJobPosting)
 	}
 }

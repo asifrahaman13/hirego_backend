@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"fmt"
+
 	"github.com/asifrahaman13/hirego/internal/core/domain"
 	"github.com/asifrahaman13/hirego/internal/core/ports"
 	"github.com/asifrahaman13/hirego/internal/helper"
@@ -88,7 +90,7 @@ func (h *hrHandler) JobPosting(c *gin.Context) {
 	var jobPosting domain.JobPosting
 	c.BindJSON(&jobPosting)
 
-	jobPosting.UserID= c.MustGet("username").(map[string]interface{})["username"].(string)
+	jobPosting.UserID = c.MustGet("username").(map[string]interface{})["username"].(string)
 
 	// Call the service to post the job.
 	message, err := h.hrService.JobPosting(jobPosting)
@@ -101,7 +103,7 @@ func (h *hrHandler) JobPosting(c *gin.Context) {
 	helper.JSONResponse(c, 200, message, nil)
 }
 
-func(h *hrHandler) GetJobPosting(c *gin.Context) {
+func (h *hrHandler) GetJobPosting(c *gin.Context) {
 	// Get the hr's email from the context
 	// hrMap := c.MustGet("username").(map[string]interface{})
 	var jobPosting domain.JobPosting
@@ -118,9 +120,12 @@ func(h *hrHandler) GetJobPosting(c *gin.Context) {
 	helper.JSONResponse(c, 200, jobPosting, nil)
 }
 
-func(h *hrHandler) GetAllJobPosting(c *gin.Context) {
+func (h *hrHandler) GetAllJobPosting(c *gin.Context) {
+
 	// Call the service to get the hr's profile information.
 	jobPosting, err := h.hrService.GetAllJobPosting()
+
+	fmt.Println(jobPosting)
 
 	if err != nil {
 		panic(err)
@@ -130,7 +135,7 @@ func(h *hrHandler) GetAllJobPosting(c *gin.Context) {
 	helper.JSONResponse(c, 200, jobPosting, nil)
 }
 
-func(h *hrHandler) HrSpecificJobPosting(c *gin.Context) {
+func (h *hrHandler) HrSpecificJobPosting(c *gin.Context) {
 	// Get the hr's email from the context
 	hrMap := c.MustGet("username").(map[string]interface{})
 
@@ -144,5 +149,3 @@ func(h *hrHandler) HrSpecificJobPosting(c *gin.Context) {
 	// Next call the helper function to send the response.
 	helper.JSONResponse(c, 200, jobPosting, nil)
 }
-
-

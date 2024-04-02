@@ -10,6 +10,8 @@ import (
 
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
+
+		fmt.Println("Inside the Auth middleware", c.GetHeader("Authorization"))
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" {
 			helper.JSONResponse(c, http.StatusUnauthorized, "Unauthorized", nil)
