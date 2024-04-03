@@ -30,7 +30,7 @@ func (s *userService) Signup(user domain.User) (string, error) {
 
 	if !message {
 		return "Failed to insert data", nil
-	
+
 	}
 
 	// Return the success message.
@@ -46,7 +46,6 @@ func (s *userService) Login(user domain.User) (domain.AccessToken, error) {
 		panic(err)
 	}
 
-	
 	// Define the access token instance.
 	accessToken := domain.AccessToken{
 		Token: token,
@@ -166,7 +165,6 @@ func (s *userService) SetUserProfileInformation(username string, userInformation
 	return "Your profile information stored successfully", nil
 }
 
-
 func (s *userService) ApplyForJobPosting(jobPosting domain.JobApplication) (string, error) {
 
 	// Call the login repo to insert the data of the user.
@@ -182,4 +180,40 @@ func (s *userService) ApplyForJobPosting(jobPosting domain.JobApplication) (stri
 
 	// Return the success message.
 	return "You have successfully applied for the job", nil
+}
+
+func (s *userService) GetAppliedJobPosting(username string) ([]domain.JobApplication, error) {
+
+	// Call the login repo to insert the data of the user.
+	jobApplications, err := s.repo.GetAllByField("userID", username, "jobapplications")
+
+	if err != nil {
+		panic(err)
+	}
+
+	// Define a variable to store the converted data.
+	var convertedData []domain.JobApplication
+
+	for _, jobApplication := range jobApplications {
+		// Convert the data into bson json like document.
+		bsonBytes, err := bson.Marshal(jobApplication)
+
+		if err != nil {
+			panic(err)
+		}
+
+		// Convert bson to golang data structure.
+		var job domain.JobApplication
+		err = bson.Unmarshal(bsonBytes, &job)
+		if err != nil {
+			panic(err)
+		}
+
+		// Append the converted data to the convertedData slice.
+		convertedData = append(convertedData, job)
+
+	}
+
+	// Return the success message.
+	return convertedData, nil
 }

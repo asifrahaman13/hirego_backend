@@ -142,3 +142,19 @@ func (s *userHandler) ApplyForJobPosting(c *gin.Context) {
 	helper.Response(c, 200, message, nil)
 
 }
+
+func (s *userHandler) GetAppliedJobPosting(c *gin.Context) {
+
+	userMap := c.MustGet("username").(map[string]interface{})
+
+	// Call the login repo to insert the data of the user.
+	message, err := s.userService.GetAppliedJobPosting(userMap["username"].(string))
+
+	if err != nil {
+		panic(err)
+	}
+
+	// Next call the helper function to send the response.
+	helper.JSONResponse(c, 200, message, nil)
+
+}
