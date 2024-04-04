@@ -6,8 +6,24 @@ First clone the repository.
 git clone https://github.com/asifrahaman13/hirego_backend.git
 ```
 
-Next run the application.
+Rename the .env.example file to .env file.
+
+In Unix based system you can use the following:
 
 ```bash
-go run src/cmd/main.go 
+mb .env.example .env
 ```
+
+In windows you can manually do the same.
+
+Next update the required values in the .env file.
+
+Now run the application in local development server.
+
+```bash
+go run src/cmd/main.go
+```
+
+The backend will run on the following port:
+
+http://localhost:8000
