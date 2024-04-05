@@ -2,39 +2,57 @@ package main
 
 import (
 	"fmt"
-	"log"
-	"time"
-
 	"github.com/asifrahaman13/hirego/internal/core/services"
 	"github.com/asifrahaman13/hirego/internal/handlers"
 	"github.com/asifrahaman13/hirego/internal/repository"
 	"github.com/asifrahaman13/hirego/internal/routes"
+	"github.com/asifrahaman13/hirego/pkg/cronJobs"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"log"
+	"time"
 )
 
 func main() {
-    if err := run(); err != nil {
-        log.Fatal(err)
-    }
+	if err := run(); err != nil {
+		log.Fatal(err)
+	}
+    
+	// Create a new cron service
+	cronService := service.NewCronService()
 
-    parent_route := gin.Default()
+	// Add a job to run every day at midnight
+	_, err := cronService.AddJob("* * * * *", func() {
+		fmt.Println("Running cron job every minutes")
+		// Call the cron job function
+		cronjobs.Cronjobs()
+	})
 
-    // Allow all origins and proxy all requests.
-    parent_route.Use(cors.New(cors.Config{
-        AllowOrigins:     []string{"*"},
-        AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
-        AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
-        AllowCredentials: true,
-        MaxAge:           12 * time.Hour,
-    }))
+	if err != nil {
+		panic(err)
+	}
 
-    // Initialize the routes.
-    routes.InitializeRoutes(parent_route)
+	// Start the cron scheduler
+	cronService.Start()
+    
+	// Create a new gin router
+	parent_route := gin.Default()
 
-    log.Fatal(parent_route.Run())
+	// Allow all origins and proxy all requests.
+	parent_route.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Accept", "Authorization"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
+
+	// Initialize the routes.
+	routes.InitializeRoutes(parent_route)
+
+	log.Fatal(parent_route.Run())
+
 }
-
 
 func run() error {
 	// Initialize the database.
