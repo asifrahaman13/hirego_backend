@@ -11,7 +11,7 @@ Rename the .env.example file to .env file.
 In Unix based system you can use the following:
 
 ```bash
-mb .env.example .env
+mv .env.example .env
 ```
 
 In windows you can manually do the same.
