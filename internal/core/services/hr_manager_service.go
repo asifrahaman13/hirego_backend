@@ -1,6 +1,8 @@
 package service
 
 import (
+	"fmt"
+
 	"github.com/asifrahaman13/hirego/internal/core/domain"
 	"github.com/asifrahaman13/hirego/internal/core/ports"
 	"github.com/asifrahaman13/hirego/internal/helper"
@@ -170,10 +172,9 @@ func (s *hrService) GetAllJobPosting() ([]domain.JobPosting, error) {
 	return postings, nil
 }
 
-
 func (s *hrService) HrSpecificJobPosting(username string) ([]domain.JobPosting, error) {
 	// Call the login repo to insert the data of the user.
-	jobPostings, err := s.repo.GetAllByField("userID", username, "jobposting")
+	jobPostings, err := s.repo.GetAllByField("Username", username, "jobposting")
 	if err != nil {
 		panic(err)
 	}
@@ -197,4 +198,60 @@ func (s *hrService) HrSpecificJobPosting(username string) ([]domain.JobPosting, 
 	}
 
 	return postings, nil
+}
+
+func (s *hrService) GetAllApplicants(jobID string) ([]domain.UserInformation, error) {
+	// Call the login repo to insert the data of the user.
+	applicants, err := s.repo.GetAllByField("jobID", jobID, "jobapplications")
+	if err != nil {
+		panic(err)
+	}
+
+	var users []domain.UserInformation
+	for index, user := range applicants {
+		// Marshal the MongoDB document into a byte slice.
+		bsonBytes, err := bson.Marshal(user)
+		if err != nil {
+			return nil, err
+		}
+
+		fmt.Println(index, user)
+
+		// Unmarshal the byte slice into a domain.UserInformation struct.
+		var u domain.UserInformation
+		err = bson.Unmarshal(bsonBytes, &u)
+
+		fmt.Println(u.Username)
+		if err != nil {
+			return nil, err
+		}
+
+		userInformation, err := s.repo.GetByField("username", u.Username, "userprofile")
+
+		fmt.Println("The user information is", userInformation)
+
+		if err != nil {
+			panic(err)
+		}
+
+		// Marshal the MongoDB document into a byte slice.
+		bsonBytes, err = bson.Marshal(userInformation)
+		if err != nil {
+			panic(err)
+		}
+
+		// Unmarshal the byte slice into a domain.UserInformation struct.
+		var userData domain.UserInformation
+		err = bson.Unmarshal(bsonBytes, &userData)
+		if err != nil {
+			panic(err)
+
+		}
+
+		fmt.Println(userData)
+
+		users = append(users, userData)
+	}
+
+	return users, nil
 }

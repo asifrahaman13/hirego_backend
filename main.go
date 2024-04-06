@@ -6,7 +6,7 @@ import (
 	"github.com/asifrahaman13/hirego/internal/handlers"
 	"github.com/asifrahaman13/hirego/internal/repository"
 	"github.com/asifrahaman13/hirego/internal/routes"
-	"github.com/asifrahaman13/hirego/pkg/cronJobs"
+	// "github.com/asifrahaman13/hirego/pkg/cronJobs"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"log"
@@ -25,7 +25,7 @@ func main() {
 	_, err := cronService.AddJob("* * * * *", func() {
 		fmt.Println("Running cron job every minutes")
 		// Call the cron job function
-		cronjobs.Cronjobs()
+		// cronjobs.Cronjobs()
 	})
 
 	if err != nil {

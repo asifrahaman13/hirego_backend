@@ -29,7 +29,7 @@ type UserInformation struct {
 	Country          string                 `json:"country" bson:"country"`
 	State            string                 `json:"state" bson:"state"`
 	PushNotification string                 `json:"pushnotification" bson:"pushnotification"`
-	Notificationis   map[string]interface{} `json:"notificationis" bson:"notificationis"`
+	Notifications    map[string]interface{} `json:"Notifications" bson:"Notifications"`
 }
 
 type WorkExperience struct {

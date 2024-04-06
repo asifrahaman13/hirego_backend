@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+
 	"github.com/asifrahaman13/hirego/internal/core/domain"
 	"github.com/asifrahaman13/hirego/internal/core/ports"
 	"github.com/asifrahaman13/hirego/internal/helper"
@@ -185,7 +186,7 @@ func (s *userService) ApplyForJobPosting(jobPosting domain.JobApplication) (stri
 func (s *userService) GetAppliedJobPosting(username string) ([]domain.JobApplication, error) {
 
 	// Call the login repo to insert the data of the user.
-	jobApplications, err := s.repo.GetAllByField("userID", username, "jobapplications")
+	jobApplications, err := s.repo.GetAllByField("Username", username, "jobapplications")
 
 	if err != nil {
 		panic(err)

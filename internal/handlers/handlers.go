@@ -23,7 +23,7 @@ func (h *userHandler) Initialize(userserv ports.UserService) {
 func (h *userHandler) Signup(c *gin.Context) {
 	var user domain.User
 	c.BindJSON(&user)
-   
+
 	// Call the signup service to signup the user.
 	message, err := h.userService.Signup(user)
 
@@ -75,7 +75,6 @@ func (h *userHandler) GetUserWorkInformation(c *gin.Context) {
 
 	var username domain.UserName
 	c.BindJSON(&username)
-
 
 	// Call the signup service to signup the user.
 	message, err := h.userService.GetUserWorkInformation(username.Username)
@@ -129,7 +128,7 @@ func (s *userHandler) ApplyForJobPosting(c *gin.Context) {
 
 	userMap := c.MustGet("username").(map[string]interface{})
 
-	jobPosting.UserID=userMap["username"].(string)
+	jobPosting.Username = userMap["username"].(string)
 
 	// Call the login repo to insert the data of the user.
 	message, err := s.userService.ApplyForJobPosting(jobPosting)

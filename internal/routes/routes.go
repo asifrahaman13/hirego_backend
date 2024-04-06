@@ -44,6 +44,8 @@ func SetupHrRoutes(router *gin.Engine, middlewares ...gin.HandlerFunc) {
 		hr.POST("/jobposting", handlers.HRHandler.JobPosting) // Route for HR to post a job
 		hr.GET("/jobposting", handlers.HRHandler.HrSpecificJobPosting) // Get all the job postings by the particular HR
 		hr.POST("/userpublicinformation", handlers.UserHandler.GetUserWorkInformation)
+		hr.POST("/applicants", handlers.HRHandler.GetAllApplicants)
+		hr.POST("/userworkinformation", handlers.UserHandler.SetUserWrorkInformation)
 	}
 }
 

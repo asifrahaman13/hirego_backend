@@ -7,7 +7,7 @@ import (
 type JobPosting struct {
 	ID               primitive.ObjectID `json:"id,omitempty" bson:"_id,omitempty"`
 	JobID            string             `json:"jobID" bson:"jobID"`
-	UserID           string             `json:"userID" bson:"userID"`
+	Username         string             `json:"username" bson:"username"`
 	Title            string             `json:"title" bson:"title"`
 	Description      string             `json:"description" bson:"description"`
 	Responsibilities []string           `json:"responsibilities" bson:"responsibilities"`
@@ -42,11 +42,11 @@ type JobPosting struct {
 }
 
 type JobApplication struct {
-	ID        primitive.ObjectID `json:"id,omitempty" bson:"_id,omitempty"`
-	JobID     string             `json:"jobID" bson:"jobID"`
-	UserID    string             `json:"userID" bson:"userID"`
-	CompanyName string           `json:"companyName" bson:"companyName"`
-	JobTitle  string             `json:"jobTitle" bson:"jobTitle"`
-    Description string           `json:"description" bson:"description"`
-	Location  string             `json:"location" bson:"location"`
+	ID          primitive.ObjectID `json:"id,omitempty" bson:"_id,omitempty"`
+	JobID       string             `json:"jobID" bson:"jobID"`
+	Username    string             `json:"Username" bson:"Username"`
+	CompanyName string             `json:"companyName" bson:"companyName"`
+	JobTitle    string             `json:"jobTitle" bson:"jobTitle"`
+	Description string             `json:"description" bson:"description"`
+	Location    string             `json:"location" bson:"location"`
 }
